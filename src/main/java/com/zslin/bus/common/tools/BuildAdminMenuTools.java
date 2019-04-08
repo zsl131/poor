@@ -33,7 +33,7 @@ public class BuildAdminMenuTools {
 //        String pn = "com/zslin/*/dao/*Service.class";
 
 //        String pn = "com/zslin/*/dao/**Service.class";
-        buildByPn("com/zslin/basic/service/*Service.class", "com/zslin/bus/*/service/*Service.class");
+        buildByPn("com/zslin/basic/service/*Service.class", "com/zslin/bus/*/service/*Service.class", "com/zslin/bus/service/*Service.class");
     }
 
     private void buildByPn(String ...pns) {
