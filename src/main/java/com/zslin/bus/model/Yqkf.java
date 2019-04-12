@@ -1,4 +1,4 @@
-package com.zslin.basic.model;
+package com.zslin.bus.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

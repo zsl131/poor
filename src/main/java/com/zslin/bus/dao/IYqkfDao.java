@@ -1,4 +1,4 @@
-package com.zslin.basic.dao;
+package com.zslin.bus.dao;
 
 import com.zslin.basic.model.Role;
 import com.zslin.basic.repository.BaseRepository;
