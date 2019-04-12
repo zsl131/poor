@@ -69,12 +69,12 @@ public class UploadController {
     /**
      * 保存文件，直接以multipartFile形式
      * @param multipartFile
-     * @param path 文件保存绝对路径
+     * @param extra 扩展参数
      * @return 返回文件名
      * @throws IOException
      */
     @RequestMapping(value = "uploadFile")
-    public String uploadFile(@RequestParam("file")MultipartFile[] multipartFile,String path) throws IOException {
+    public String uploadFile(@RequestParam("file")MultipartFile[] multipartFile,String extra) throws IOException {
 //        System.out.println("======="+path+"=====length:"+multipartFile.length);
         String result = "error";
         if(multipartFile!=null && multipartFile.length>=1) {
@@ -89,9 +89,27 @@ public class UploadController {
                 File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + UUID.randomUUID().toString() + NormalTools.getFileType(fileName));
                 result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
                 FileUtils.copyInputStreamToFile(file.getInputStream(), outFile);
-                Thumbnails.of(outFile).size(1000, 1000).toFile(outFile);
+                Integer w = 1000, h = 1000;
+                try { w = Integer.parseInt(buildExtra(extra, "w")); } catch (Exception e) { }
+                try { h = Integer.parseInt(buildExtra(extra, "h")); } catch (Exception e) { }
+                Thumbnails.of(outFile).size(w, h).toFile(outFile);
 //                result.add(uploadPath);
             }
+        }
+        return result;
+    }
+
+    //w:4000_h:2400
+    private String buildExtra(String extra, String field) {
+        System.out.println("========="+extra);
+        String result = null;
+        try {
+            String [] array = extra.split("_");
+            for(String a : array) {
+                String [] tmp = a.split(":");
+                if(field.equals(tmp[0])) {result = tmp[1];}
+            }
+        } catch (Exception e) {
         }
         return result;
     }
