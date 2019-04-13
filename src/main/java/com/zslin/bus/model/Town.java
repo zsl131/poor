@@ -22,6 +22,30 @@ public class Town {
     /** 级别，10-县级；11-镇级，数值越大级别越低 */
     private String level;
 
+    /** 乡镇介绍 */
+    @Lob
+    private String remark;
+
+    /** 图片路径 */
+    @Column(name = "pic_url")
+    private String picUrl;
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public Integer getId() {
         return id;
     }

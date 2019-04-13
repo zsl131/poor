@@ -69,7 +69,7 @@ public class DictionaryService {
         Integer pid = obj.getPid();
         if(obj.getId()!=null && obj.getId()>0) { //修改
             Dictionary t = dictionaryDao.getOne(obj.getId());
-            MyBeanUtils.copyProperties(obj, t, "pid", "pname", "pcode");
+            MyBeanUtils.copyProperties(obj, t, "pid", "pname", "pcode", "code");
             dictionaryDao.save(t);
         } else {
             if(obj.getPid()==null || obj.getPid()<=0) {
