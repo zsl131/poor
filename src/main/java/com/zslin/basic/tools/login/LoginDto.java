@@ -17,6 +17,8 @@ public class LoginDto {
 
     private List<Menu> authMenus;
 
+    private String level;
+
     public LoginDto() {
         navMenus = new ArrayList<>();
         authMenus = new ArrayList<>();
@@ -25,6 +27,14 @@ public class LoginDto {
     public LoginDto(List<MenuDto> navMenus, List<Menu> authMenus) {
         this.navMenus = navMenus;
         this.authMenus = authMenus;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public User getUser() {

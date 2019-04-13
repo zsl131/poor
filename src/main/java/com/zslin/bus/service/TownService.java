@@ -10,12 +10,14 @@ import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
 import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.dao.IUserTownDao;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +30,36 @@ public class TownService {
     @Autowired
     private ITownDao townDao;
 
+    @Autowired
+    private IUserTownDao userTownDao;
+
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
         Page<Town> res = townDao.findAll(QueryTools.getInstance().buildSearch(qld.getConditionDtoList()),
                 SimplePageBuilder.generate(qld.getPage(), qld.getSize(), SimpleSortBuilder.generateSort(qld.getSort())));
         return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent());
+    }
+
+    public JsonResult listByLogin(String params) {
+        String username = JsonTools.getHeaderParams(params, "username"); //
+        String level = JsonTools.getJsonParam(params, "level");
+        List<Town> townList ;
+        if("10".equals(level)) { //如果是县级
+            townList = townDao.findAll();
+        } else {
+            townList = townDao.findByUsername(username);
+        }
+//        System.out.println("username::"+username);
+        return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList));
+    }
+
+    public List<String> buildPic(List<Town> townList) {
+        List<String> result = new ArrayList<>();
+        for(Town t : townList) {
+            String picUrl = t.getPicUrl();
+            if(picUrl!=null && !"".equals(picUrl)) {result.add(picUrl);}
+        }
+        return result;
     }
 
     public JsonResult listNoPage(String params) {
