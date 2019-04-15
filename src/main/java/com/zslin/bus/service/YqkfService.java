@@ -16,8 +16,33 @@ public class YqkfService {
      * @return
      */
     public List<YqkfDto> importYqkf() {
-        excelToField("d:/test/01.xls",1,1);
+        excelToField("d:/test/011.xls",1,0);
         return null;
+    }
+
+    private String getBaseCellValue(Cell c) {
+        String o = null;
+        switch (c.getCellType()) {
+            case Cell.CELL_TYPE_BLANK:
+                o = "";
+                break;
+            case Cell.CELL_TYPE_BOOLEAN:
+                o = String.valueOf(c.getBooleanCellValue());
+                break;
+            case Cell.CELL_TYPE_FORMULA:
+                o = String.valueOf(c.getCellFormula());
+                break;
+            case Cell.CELL_TYPE_NUMERIC:
+                o = String.valueOf(c.getNumericCellValue());
+                break;
+            case Cell.CELL_TYPE_STRING:
+                o = c.getStringCellValue();
+                break;
+            default:
+                o = null;
+                break;
+        }
+        return o;
     }
 
     public void excelToField(String excelFile, int beginLine, int sheetNum) {
@@ -33,7 +58,7 @@ public class YqkfService {
                 String cur = "";
                 String as = "";
                 for (Cell rc : row) {
-                    System.out.print(rc.getColumnIndex()+"-"+row.getLastCellNum()+"|");
+                    System.out.print(getBaseCellValue(rc)+"--");
                 }
                 System.out.println("");
             }

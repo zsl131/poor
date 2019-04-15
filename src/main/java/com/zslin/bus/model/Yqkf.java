@@ -13,7 +13,11 @@ public class Yqkf {
     private int id;
     //序号，对应excel表中的家庭序号，以户为单位递增
     private int xh;
-    //户主姓名
+    //户主姓名，一个户主可能对应多个家庭成员
+    private int hzxm;
+    //家庭人口数
+    private int jtrks;
+    //家庭成员
     private String xm;
     //户主关系
     private String gx;
@@ -118,6 +122,22 @@ public class Yqkf {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getHzxm() {
+        return hzxm;
+    }
+
+    public void setHzxm(int hzxm) {
+        this.hzxm = hzxm;
+    }
+
+    public int getJtrks() {
+        return jtrks;
+    }
+
+    public void setJtrks(int jtrks) {
+        this.jtrks = jtrks;
     }
 
     public int getXh() {
