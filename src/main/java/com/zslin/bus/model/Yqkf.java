@@ -11,6 +11,8 @@ import java.util.Date;
 public class Yqkf {
     //id
     private int id;
+    //序号，对应excel表中的家庭序号，以户为单位递增
+    private int xh;
     //户主姓名
     private String xm;
     //户主关系
@@ -116,6 +118,14 @@ public class Yqkf {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getXh() {
+        return xh;
+    }
+
+    public void setXh(int xh) {
+        this.xh = xh;
     }
 
     public String getXm() {
