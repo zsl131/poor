@@ -6,6 +6,7 @@ import com.zslin.basic.annotations.AdminAuth;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.basic.tools.MyBeanUtils;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
@@ -63,6 +64,7 @@ public class DictionaryService {
         return JsonResult.succ(obj);
     }
 
+    @Function("添加修改数据字典")
     public JsonResult addOrUpdate(String params) {
         Dictionary obj = JSONObject.toJavaObject(JSON.parseObject(params), Dictionary.class);
         String code = obj.getCode();

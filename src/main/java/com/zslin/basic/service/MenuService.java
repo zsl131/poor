@@ -11,6 +11,7 @@ import com.zslin.basic.model.Menu;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.basic.tools.normal.MenuTools;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.AuthRoleMenuTools;
 import com.zslin.bus.common.tools.BuildAdminMenuTools;
@@ -46,6 +47,7 @@ public class MenuService {
     @Autowired
     private AuthRoleMenuTools authRoleMenuTools;
 
+    @Function("初始化系统菜单")
     @AdminAuth(name = "初始化菜单", orderNum = 6)
     public JsonResult init(String params) {
         buildAdminMenuTools.buildAdminMenus(); //重构菜单
@@ -97,6 +99,7 @@ public class MenuService {
     }
 
     @AdminAuth(name = "添加菜单", orderNum = 2)
+    @Function("添加菜单")
     public JsonResult add(String params) {
         try {
             Menu menu = JSONObject.toJavaObject(JSON.parseObject(params), Menu.class);
@@ -109,6 +112,7 @@ public class MenuService {
     }
 
     @AdminAuth(name = "修改菜单", orderNum = 3)
+    @Function("修改菜单")
     public JsonResult update(String params) {
         try {
             Menu menu = JSONObject.toJavaObject(JSON.parseObject(params), Menu.class);
@@ -126,6 +130,7 @@ public class MenuService {
     }
 
     @AdminAuth(name = "删除菜单", orderNum = 4)
+    @Function("删除菜单")
     public JsonResult delete(String params) {
         try {
             Integer id = Integer.parseInt(JsonTools.getJsonParam(params, "id"));

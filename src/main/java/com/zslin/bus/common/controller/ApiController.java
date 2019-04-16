@@ -1,12 +1,17 @@
 package com.zslin.bus.common.controller;
 
 import com.zslin.basic.tools.Base64Utils;
+import com.zslin.basic.tools.NormalTools;
+import com.zslin.bus.common.annotations.Function;
+import com.zslin.bus.common.idao.IRecordDao;
 import com.zslin.bus.common.iservice.IApiCodeSerivce;
 import com.zslin.bus.common.iservice.IApiTokenCodeService;
 import com.zslin.bus.common.iservice.IApiTokenService;
 import com.zslin.bus.common.model.ApiCode;
 import com.zslin.bus.common.model.ApiToken;
 import com.zslin.bus.common.model.ApiTokenCode;
+import com.zslin.bus.common.model.Record;
+import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.tools.JsonParamTools;
 import com.zslin.bus.tools.JsonResult;
 import org.springframework.beans.factory.BeanFactory;
@@ -37,6 +42,9 @@ public class ApiController {
 
     @Autowired
     private IApiTokenCodeService apiTokenCodeService;
+
+    @Autowired
+    private IRecordDao recordDao;
 
     /**
      * 此接口调用的业务接口有一个名为"handle"的方法，此方法接受两个String类型的参数action和params
@@ -79,10 +87,26 @@ public class ApiController {
                 result = (JsonResult) method.invoke(obj);
             }
 //            System.out.println("result: "+result);
+            record(method, apiCode, params);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.getInstance().fail("数据请求失败："+e.getMessage());
+        }
+    }
+
+    private void record(Method method, String actionName, String params) {
+//        System.out.println(method.isAnnotationPresent(Function.class)+"====");
+        if(method.isAnnotationPresent(Function.class)) {
+            Function f = method.getAnnotation(Function.class);
+            String name = f.value();
+            String username = JsonTools.getHeaderParams(params, "username");
+            Record r = new Record();
+            r.setCreateDate(NormalTools.curDate());
+            r.setCreateTime(NormalTools.curDatetime());
+            r.setUsername(username);
+            r.setName(name);
+            recordDao.save(r);
         }
     }
 
@@ -131,6 +155,7 @@ public class ApiController {
                     result = (JsonResult) method.invoke(obj);
                 }
 //                System.out.println("result: "+result);
+                record(method, serviceName+"."+methodName, params);
                 return result;
 //                JsonResult result = (JsonResult) method.invoke(obj, params);
 //                return result;

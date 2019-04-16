@@ -19,6 +19,7 @@ import com.zslin.basic.tools.SecurityUtil;
 import com.zslin.basic.tools.login.LoginDto;
 import com.zslin.basic.tools.login.LoginTools;
 import com.zslin.bus.common.annotations.ApiCodeClass;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
@@ -74,6 +75,7 @@ public class UserService implements IUserService {
     }
 
     @AdminAuth(name = "修改用户", orderNum = 2)
+    @Function("修改用户信息")
     public JsonResult saveUser(String params) {
 //        System.out.println("params::   "+ params);
         try {
@@ -102,6 +104,7 @@ public class UserService implements IUserService {
         }
     }
 
+    @Function("删除用户")
     @AdminAuth(name = "删除用户", orderNum = 3)
     public JsonResult deleteUser(String params) {
         System.out.println("params:::"+params);
@@ -120,6 +123,7 @@ public class UserService implements IUserService {
         }
     }
 
+    @Function("用户登陆")
     public JsonResult login(String params) {
         try {
             String username = JsonTools.getJsonParam(params, "username");
@@ -163,6 +167,7 @@ public class UserService implements IUserService {
     }
 
     @AdminAuth(name = "分配用户角色", orderNum = 5)
+    @Function("为用户分配角色")
     public JsonResult authRole(String params) {
         System.out.println(params);
         try {
@@ -184,6 +189,7 @@ public class UserService implements IUserService {
         }
     }
 
+    @Function("修改密码")
     public JsonResult updatePwd(String params) {
         try {
             Integer id = Integer.parseInt(JsonTools.getJsonParam(params, "id"));

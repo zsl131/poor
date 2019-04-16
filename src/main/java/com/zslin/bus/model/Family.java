@@ -17,6 +17,9 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    /** 序号 */
+    private Integer xh;
+
     /** 户主姓名 */
     private String xm;
 
@@ -52,6 +55,14 @@ public class Family {
 
     /** 备注 */
     private String bz;
+
+    public Integer getXh() {
+        return xh;
+    }
+
+    public void setXh(Integer xh) {
+        this.xh = xh;
+    }
 
     public Integer getId() {
         return id;

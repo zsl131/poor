@@ -1,5 +1,6 @@
 package com.zslin.bus.service;
 
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dao.IUserTownDao;
@@ -30,6 +31,7 @@ public class UserTownService {
         return JsonResult.success("获取成功").set("townIds", townIds).set("townList", townList);
     }
 
+    @Function("为用户授权乡镇")
     public JsonResult setUserTown(String params) {
         Integer userId = Integer.parseInt(JsonTools.getJsonParam(params, "userId"));
         Integer townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId"));

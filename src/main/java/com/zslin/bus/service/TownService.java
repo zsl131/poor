@@ -6,6 +6,7 @@ import com.zslin.basic.annotations.AdminAuth;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.basic.tools.MyBeanUtils;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
@@ -73,6 +74,7 @@ public class TownService {
         return JsonResult.succ(obj);
     }
 
+    @Function("添加修改乡镇")
     public JsonResult addOrUpdate(String params) {
         Town obj = JSONObject.toJavaObject(JSON.parseObject(params), Town.class);
         if(obj.getId()!=null && obj.getId()>0) { //修改

@@ -17,11 +17,17 @@ public class Personal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    /** 序号 */
+    private Integer xh;
+
     /** 户主姓名 */
     private String xm;
 
     /** 身份证号 */
     private String sfzh;
+
+    /** 家庭人数 */
+    private Integer jtrs;
 
     /** 家庭地址 */
     private String jtdz;
@@ -191,6 +197,82 @@ public class Personal {
 
     /** 与户主关系 */
     private String yhzgx;
+
+    @Override
+    public String toString() {
+        return "Personal{" +
+                "id=" + id +
+                ", xh=" + xh +
+                ", xm='" + xm + '\'' +
+                ", sfzh='" + sfzh + '\'' +
+                ", jtrs=" + jtrs +
+                ", jtdz='" + jtdz + '\'' +
+                ", xb='" + xb + '\'' +
+                ", mz='" + mz + '\'' +
+                ", pksx='" + pksx + '\'' +
+                ", yqhsx='" + yqhsx + '\'' +
+                ", lxdh='" + lxdh + '\'' +
+                ", bqdd='" + bqdd + '\'' +
+                ", bqsj='" + bqsj + '\'' +
+                ", bz='" + bz + '\'' +
+                ", nl=" + nl +
+                ", whcd='" + whcd + '\'' +
+                ", sfsldl='" + sfsldl + '\'' +
+                ", sfzx='" + sfzx + '\'' +
+                ", jdxx='" + jdxx + '\'' +
+                ", jdnj='" + jdnj + '\'' +
+                ", sfxszz='" + sfxszz + '\'' +
+                ", zzxm='" + zzxm + '\'' +
+                ", zzje=" + zzje +
+                ", jkzk='" + jkzk + '\'' +
+                ", sfylbx='" + sfylbx + '\'' +
+                ", sfyb='" + sfyb + '\'' +
+                ", cbxz='" + cbxz + '\'' +
+                ", cbdw='" + cbdw + '\'' +
+                ", sfhb='" + sfhb + '\'' +
+                ", cjhzpx='" + cjhzpx + '\'' +
+                ", jyqk='" + jyqk + '\'' +
+                ", wgdy='" + wgdy + '\'' +
+                ", wgdd='" + wgdd + '\'' +
+                ", qymc='" + qymc + '\'' +
+                ", gwmc='" + gwmc + '\'' +
+                ", wgsj='" + wgsj + '\'' +
+                ", ygz=" + ygz +
+                ", cyxm='" + cyxm + '\'' +
+                ", cydd='" + cydd + '\'' +
+                ", cysj='" + cysj + '\'' +
+                ", ysr=" + ysr +
+                ", wgqx='" + wgqx + '\'' +
+                ", gyxgw='" + gyxgw + '\'' +
+                ", zzcy='" + zzcy + '\'' +
+                ", wfwcyy='" + wfwcyy + '\'' +
+                ", pxxq='" + pxxq + '\'' +
+                ", zjd=" + zjd +
+                ", gd=" + gd +
+                ", zzpz='" + zzpz + '\'' +
+                ", zzdmj=" + zzdmj +
+                ", hzid=" + hzid +
+                ", hzxm='" + hzxm + '\'' +
+                ", hzsfzh='" + hzsfzh + '\'' +
+                ", yhzgx='" + yhzgx + '\'' +
+                '}';
+    }
+
+    public Integer getJtrs() {
+        return jtrs;
+    }
+
+    public void setJtrs(Integer jtrs) {
+        this.jtrs = jtrs;
+    }
+
+    public Integer getXh() {
+        return xh;
+    }
+
+    public void setXh(Integer xh) {
+        this.xh = xh;
+    }
 
     public Integer getId() {
         return id;

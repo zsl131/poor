@@ -10,6 +10,7 @@ import com.zslin.basic.model.RoleMenu;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.basic.tools.PinyinToolkit;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
@@ -33,6 +34,7 @@ public class RoleService {
     @Autowired
     private IRoleMenuDao roleMenuDao;
 
+    @Function("为角色授权菜单")
     public JsonResult authMenu(String params) {
         try {
             Integer mid = Integer.parseInt(JsonTools.getJsonParam(params, "mid"));
@@ -77,6 +79,7 @@ public class RoleService {
     }
 
     @AdminAuth(name = "添加角色", orderNum = 2)
+    @Function("添加角色")
     public JsonResult add(String params) {
         try {
             Role role = JSONObject.toJavaObject(JSON.parseObject(params), Role.class);
@@ -94,6 +97,7 @@ public class RoleService {
     }
 
     @AdminAuth(name = "修改角色", orderNum = 3)
+    @Function("修改角色")
     public JsonResult update(String params) {
         try {
             Role r = JSONObject.toJavaObject(JSON.parseObject(params), Role.class);
@@ -118,6 +122,7 @@ public class RoleService {
     }
 
     @AdminAuth(name = "删除角色", orderNum = 4)
+    @Function("删除角色")
     public JsonResult delete(String params) {
         try {
             Integer id = Integer.parseInt(JsonTools.getJsonParam(params, "id"));
