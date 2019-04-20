@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * Created by zsl on 2019/4/15.
  */
 public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecificationExecutor<Family> {
+
+    Family findBySfzh(String sfzh);
 }

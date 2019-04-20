@@ -23,4 +23,6 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
 
     @Query("FROM Personal p WHERE p.id>?1 ")
     List<Personal> findById(Integer id, Sort sort);
+
+    List<Personal> findByHzsfzh(String hzsfzh);
 }

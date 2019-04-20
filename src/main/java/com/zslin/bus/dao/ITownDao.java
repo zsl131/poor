@@ -16,4 +16,7 @@ public interface ITownDao extends BaseRepository<Town, Integer>, JpaSpecificatio
 
     @Query("SELECT t FROM Town t, UserTown u WHERE u.townId=t.id AND u.username=?1")
     List<Town> findByUsername(String username);
+
+    @Query("FROM Town t WHERE t.name LIKE CONCAT('%',?1,'%')")
+    Town findByNameLike(String name);
 }

@@ -19,6 +19,112 @@ public class ExcelBasicTools {
         return buildByExcel(is, 4, 0);
     }
 
+    public static List<Personal> buildByExcel0419(InputStream is, Integer beginLine, Integer sheetNum) {
+        beginLine=beginLine==null?0:beginLine;
+        sheetNum = sheetNum==null?0:sheetNum;
+        List<Personal> result = new ArrayList<>();
+//        Workbook wb = null;
+        try {
+            Workbook wb = WorkbookFactory.create(is);
+            Sheet s = wb.getSheetAt(sheetNum);
+            for(int i=beginLine;i<=s.getLastRowNum();i++) {
+                Row row = s.getRow(i);
+                Personal p = buildPersonal0419(row);
+                result.add(p);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(is!=null) {is.close();}
+            } catch (IOException e) {
+            }
+        }
+        return result;
+    }
+
+    /** 将一行数据转换成一个对象 */
+    public static Personal buildPersonal0419(Row row) {
+        Personal p = new Personal();
+        int index = 0;
+        for(Cell cell : row) {
+            String val = getBaseCellValue(cell);
+            switch (index) {
+                case 0: //序号
+                    p.setXh(buildInteger(val)); break;
+                case 1: //姓名
+                    p.setXm(val); break;
+                case 2: //家庭人数
+                    p.setJtrs(buildInteger(val)); break;
+                case 3: //姓名
+                    p.setXm(val); break;
+                case 4: //与户主关系
+                    p.setYhzgx(val); break;
+                case 5: //身份证号
+                    p.setSfzh(val); break;
+                case 6: //性别
+                    p.setXb(val); break;
+                case 7: //民族
+                    p.setMz(val); break;
+                case 8: //年龄
+                    p.setNl(buildInteger(val)); break;
+                case 9: //是否是劳动力
+                    p.setSfsldl(val); break;
+                case 10: //家庭地址
+                    p.setJtdz(val); break;
+                case 11: //脱贫属性
+                    p.setPksx(val); break;
+                case 12: //参加过何种培训
+                    p.setCjhzpx(val); break;
+                case 13: //文化程度
+                    p.setWhcd(val); break;
+
+                case 14: //务工地点
+                    p.setWgdd(val); break;
+                case 15: //企业名称
+                    p.setQymc(val); break;
+                case 16: //岗位名称
+                    p.setGwmc(val); break;
+                case 17: //务工时间
+                    p.setWgsj(val); break;
+                case 18: //月工资收入
+                    p.setYgz(buildFloat(val)); break;
+                case 19: //创业项目
+                    p.setCyxm(val); break;
+                case 20: //创业地点
+                    p.setCydd(val); break;
+                case 21: //创业时间
+                    p.setCysj(val); break;
+                case 22: //月收入
+                    p.setYsr(buildFloat(val)); break;
+                case 23: //务工去向
+                    p.setWgqx(val); break;
+                case 24: //公益性岗位
+                    p.setGyxgw(val); break;
+                case 25: //自主创业
+                    p.setZzcy(val); break;
+                case 26: //无法外出原因
+                    p.setWfwcyy(val); break;
+                case 27: //培训需求
+                    p.setPxxq(val); break;
+                case 28: //联系电话
+                    p.setLxdh(val); break;
+                case 29: //搬迁地点
+                    p.setBqdd(val); break;
+                case 30: //搬迁时间
+                    p.setBqsj(val); break;
+                case 31: //备注
+                    p.setBz(val); break;
+                case 32: //类型：卡户/随迁户
+                    p.setLx(val); break;
+            }
+            index++;
+        }
+        return p;
+    }
+
     public static List<Personal> buildByExcel(InputStream is, Integer beginLine, Integer sheetNum) {
         beginLine=beginLine==null?0:beginLine;
         sheetNum = sheetNum==null?0:sheetNum;
@@ -47,20 +153,25 @@ public class ExcelBasicTools {
 
     public static String getBaseCellValue(Cell cell) {
         String res = null;
-        switch (cell.getCellType()) {
-            case Cell.CELL_TYPE_BLANK:
-                res = ""; break;
-            case Cell.CELL_TYPE_BOOLEAN:
-                res = String.valueOf(cell.getBooleanCellValue()); break;
-            case Cell.CELL_TYPE_FORMULA:
-//                res = String.valueOf(cell.getCellFormula()); break;
-                res = String.valueOf(cell.getNumericCellValue()); break;
-            case Cell.CELL_TYPE_NUMERIC:
-                res = String.valueOf(cell.getNumericCellValue()); break;
-            case Cell.CELL_TYPE_STRING:
-                res = cell.getStringCellValue(); break;
-            default:
-                res = null; break;
+        try {
+            switch (cell.getCellType()) {
+                case Cell.CELL_TYPE_BLANK:
+                    res = ""; break;
+                case Cell.CELL_TYPE_BOOLEAN:
+                    res = String.valueOf(cell.getBooleanCellValue()); break;
+                case Cell.CELL_TYPE_FORMULA:
+                    res = String.valueOf(cell.getCellFormula()); break;
+//                    res = String.valueOf(cell.getNumericCellValue()); break;
+                case Cell.CELL_TYPE_NUMERIC:
+                    res = String.valueOf(cell.getNumericCellValue()); break;
+                case Cell.CELL_TYPE_STRING:
+                    res = cell.getStringCellValue(); break;
+                default:
+                    res = null; break;
+            }
+        } catch (Exception e) {
+//            e.printStackTrace();
+            System.out.println(cell.getRowIndex()+"===="+cell.getCellType()+"=="+cell.getColumnIndex());
         }
         return res;
     }

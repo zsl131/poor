@@ -198,6 +198,50 @@ public class Personal {
     /** 与户主关系 */
     private String yhzgx;
 
+    /** 乡镇ID */
+    private Integer xzid;
+
+    /** 乡镇名称 */
+    private String xzmc;
+
+    /** 类型：卡户/随迁户 */
+    private String lx;
+
+    /** 照片路径 */
+    private String zplj;
+
+    public String getZplj() {
+        return zplj;
+    }
+
+    public void setZplj(String zplj) {
+        this.zplj = zplj;
+    }
+
+    public String getLx() {
+        return lx;
+    }
+
+    public void setLx(String lx) {
+        this.lx = lx;
+    }
+
+    public Integer getXzid() {
+        return xzid;
+    }
+
+    public void setXzid(Integer xzid) {
+        this.xzid = xzid;
+    }
+
+    public String getXzmc() {
+        return xzmc;
+    }
+
+    public void setXzmc(String xzmc) {
+        this.xzmc = xzmc;
+    }
+
     @Override
     public String toString() {
         return "Personal{" +
@@ -255,6 +299,8 @@ public class Personal {
                 ", hzxm='" + hzxm + '\'' +
                 ", hzsfzh='" + hzsfzh + '\'' +
                 ", yhzgx='" + yhzgx + '\'' +
+                ", xzid=" + xzid +
+                ", xzmc='" + xzmc + '\'' +
                 '}';
     }
 

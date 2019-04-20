@@ -56,6 +56,83 @@ public class Family {
     /** 备注 */
     private String bz;
 
+    /** 乡镇ID */
+    private Integer xzid;
+
+    /** 乡镇名称 */
+    private String xzmc;
+
+    /** 宅基地，面积 */
+    private Float zjd;
+
+    /** 耕地，面积 */
+    private Float gd;
+
+    /** 种植品种 */
+    private String zzpz;
+
+    /** 种植地面积 */
+    private Float zzdmj;
+
+    /** 类型：卡户/随迁户 */
+    private String lx;
+
+    public String getLx() {
+        return lx;
+    }
+
+    public void setLx(String lx) {
+        this.lx = lx;
+    }
+
+    public Float getZjd() {
+        return zjd;
+    }
+
+    public void setZjd(Float zjd) {
+        this.zjd = zjd;
+    }
+
+    public Float getGd() {
+        return gd;
+    }
+
+    public void setGd(Float gd) {
+        this.gd = gd;
+    }
+
+    public String getZzpz() {
+        return zzpz;
+    }
+
+    public void setZzpz(String zzpz) {
+        this.zzpz = zzpz;
+    }
+
+    public Float getZzdmj() {
+        return zzdmj;
+    }
+
+    public void setZzdmj(Float zzdmj) {
+        this.zzdmj = zzdmj;
+    }
+
+    public Integer getXzid() {
+        return xzid;
+    }
+
+    public void setXzid(Integer xzid) {
+        this.xzid = xzid;
+    }
+
+    public String getXzmc() {
+        return xzmc;
+    }
+
+    public void setXzmc(String xzmc) {
+        this.xzmc = xzmc;
+    }
+
     public Integer getXh() {
         return xh;
     }
