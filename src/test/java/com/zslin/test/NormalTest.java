@@ -29,11 +29,11 @@ public class NormalTest {
     @Autowired
     private IPersonalDao personalDao;
 
-    @Test
+    /*@Test
     public void test04() {
         Integer res = personalDao.test("530628200105291721", null);
         System.out.println("res:::"+res);
-    }
+    }*/
 
     @Test
     public void test03() {

@@ -6,8 +6,10 @@ import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
+import com.zslin.bus.dao.IAssetsDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.model.Assets;
 import com.zslin.bus.model.Family;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.tools.JsonResult;
@@ -29,6 +31,9 @@ public class PersonalService {
 
     @Autowired
     private IPersonalDao personalDao;
+
+    @Autowired
+    private IAssetsDao assetsDao;
 
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
@@ -62,6 +67,7 @@ public class PersonalService {
     public JsonResult loadOne(String params) {
         Integer id = JsonTools.getId(params);
         Personal p = personalDao.findOne(id);
-        return JsonResult.getInstance().set("personal", p);
+        List<Assets> assetsList = assetsDao.findByGssfzh(p.getSfzh());
+        return JsonResult.getInstance().set("personal", p).set("assetsList", assetsList);
     }
 }
