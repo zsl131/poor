@@ -1,5 +1,6 @@
 package com.zslin.test;
 
+import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dto.PieDto;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ActiveProfiles("zsl")
+@ActiveProfiles("kh")
 public class NormalTest {
 
     @Autowired
@@ -28,6 +29,14 @@ public class NormalTest {
 
     @Autowired
     private IPersonalDao personalDao;
+
+    @Autowired
+    private IFamilyDao familyDao;
+
+    @Test
+    public void test05() {
+        familyDao.findAll();
+    }
 
     @Test
     public void test04() {
