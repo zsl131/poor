@@ -2,6 +2,7 @@ package com.zslin.test;
 
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.ExcelBasicTools;
@@ -27,6 +28,20 @@ public class NormalTest {
 
     @Autowired
     private IPersonalDao personalDao;
+
+    @Test
+    public void test04() {
+        Integer res = personalDao.test("530628200105291721", null);
+        System.out.println("res:::"+res);
+    }
+
+    @Test
+    public void test03() {
+        List<PieDto> list = personalDao.findPieByXb();
+        for(PieDto pd : list) {
+            System.out.println(pd);
+        }
+    }
 
     @Test
     public void test02() {

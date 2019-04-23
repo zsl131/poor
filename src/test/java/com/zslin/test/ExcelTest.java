@@ -1,8 +1,10 @@
 package com.zslin.test;
 
+import com.zslin.bus.dao.IDictionaryDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.model.Dictionary;
 import com.zslin.bus.model.Family;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
@@ -36,6 +38,124 @@ public class ExcelTest {
 
     @Autowired
     private IFamilyDao familyDao;
+
+    @Autowired
+    private IDictionaryDao dictionaryDao;
+
+    @Test
+    public void test10() {
+        try {
+            String excelFile = "D:/temp/ybj.xlsx";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel(fis, 4, 0, "buildPersonalYbj0423", true);
+            System.out.println("===personal count :"+ list.size());
+            Integer errorCount = 0;
+            StringBuffer sb = new StringBuffer();
+            String sfzh;
+            for(Personal p : list) {
+                sfzh = p.getSfzh();
+//                Personal obj= personalDao.findBySfzh(sfzh);
+                Integer count = personalDao.updateYbj(p.getSfyb(), p.getCbxz(), p.getCbdw(), p.getSfhb(), sfzh);
+                if(count==null || count<=0) {
+                    errorCount ++;
+                    System.out.println("error========="+sfzh);
+                    sb.append(sfzh).append(":未找到\n");
+                }
+            }
+            System.out.println("totalCount::"+list.size()+"========errorCount::"+errorCount);
+            ErrorTools.error2File("ybj_error.txt", sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test09() {
+        try {
+            String excelFile = "D:/temp/jyj.xlsx";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel(fis, 4, 0, "buildPersonalJyj0423", true);
+            System.out.println("===personal count :"+ list.size());
+            Integer errorCount = 0;
+            List<Dictionary> dataList = dictionaryDao.findByPcode("DICT_SUPPORT");
+            StringBuffer sb = new StringBuffer();
+            String sfzh, zzxmmc;
+            for(Personal p : list) {
+                sfzh = p.getSfzh();
+//                Personal obj= personalDao.findBySfzh(sfzh);
+                zzxmmc = buildZzxmmc(dataList, p.getZzxm());
+                Integer count = personalDao.updateJxqk(p.getSfzx(), p.getJyjd(), p.getJdxx(), p.getJdnj(), p.getSfxszz(), p.getZzje(), p.getZzxm(), zzxmmc, sfzh);
+                if(count==null || count<=0) {
+                    errorCount ++;
+                    System.out.println("error========="+sfzh);
+                    sb.append(sfzh).append(":未找到\n");
+                }
+                /*if(obj==null) {
+                    errorCount ++;
+                    System.out.println("error========="+sfzh);
+                    sb.append(sfzh).append(":未找到\n");
+                } else {
+                    obj.setSfzx(p.getSfzx());
+                    obj.setJyjd(p.getJyjd());
+                    obj.setJdxx(p.getJdxx());
+                    obj.setJdnj(p.getJdnj());
+                    obj.setSfxszz(p.getSfxszz());
+                    obj.setZzje(p.getZzje());
+                    obj.setZzxm(p.getZzxm());
+                    obj.setZzxmmc(buildZzxmmc(dataList, p.getZzxm()));
+                    personalDao.save(obj);
+                }*/
+            }
+            System.out.println("totalCount::"+list.size()+"========errorCount::"+errorCount);
+            ErrorTools.error2File("jyj_error.txt", sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String buildZzxmmc(List<Dictionary> dataList, String zzxm) {
+        StringBuffer sb = new StringBuffer();
+        if(zzxm!=null && !"".equals(zzxm)) {
+            zzxm.replaceAll("，", ",");
+            String [] array = zzxm.split(",");
+            for(String a : array) {
+                String code = a.trim();
+                if(code!=null && !"".equals(code)) {
+                    for(Dictionary d : dataList) {
+                        if(d.getCode().equals(code)) {
+                            sb.append(d.getName()).append(",");
+                        }
+                    }
+                    /*Dictionary d = dictionaryDao.findByPcodeAndCode("DICT_SUPPORT", code);
+                    if(d==null) {
+                        System.out.println("资助项目："+code+" 未找到");
+                    } else {
+                        sb.append(d.getName()).append(",");
+                    }*/
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    //处理性别异常的数据
+    @Test
+    public void test08() {
+        try {
+            String excelFile = "D:/temp/ylydbq0419.xls";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel0419(fis, 5739, 0);
+            for(Personal p : list) {
+                if(p.getSfzh().length()>18) {p.setSfzh(p.getSfzh().substring(0, 18));} //处理身份证号
+                String xb = p.getXb().trim();
+                if(xb!=null && xb.length()==1) {
+                    personalDao.updateXb(p.getSfzh(), xb);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /** 导入数据到数据库：人数最全的表格 */
     @Test

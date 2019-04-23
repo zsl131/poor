@@ -70,6 +70,9 @@ public class Personal {
     /** 是否在校 */
     private String sfzx;
 
+    /** 教育阶段 */
+    private String jyjd;
+
     /** 就读学校 */
     private String jdxx;
 
@@ -85,6 +88,9 @@ public class Personal {
 
     /** 资助项目 */
     private String zzxm;
+
+    /** 资助项目名称 */
+    private String zzxmmc;
 
     /** 资助金额 */
     private Float zzje;
@@ -209,6 +215,22 @@ public class Personal {
 
     /** 照片路径 */
     private String zplj;
+
+    public String getZzxmmc() {
+        return zzxmmc;
+    }
+
+    public void setZzxmmc(String zzxmmc) {
+        this.zzxmmc = zzxmmc;
+    }
+
+    public String getJyjd() {
+        return jyjd;
+    }
+
+    public void setJyjd(String jyjd) {
+        this.jyjd = jyjd;
+    }
 
     public String getZplj() {
         return zplj;

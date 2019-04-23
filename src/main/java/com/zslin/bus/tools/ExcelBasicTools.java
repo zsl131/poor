@@ -19,6 +19,39 @@ public class ExcelBasicTools {
         return buildByExcel(is, 4, 0);
     }
 
+    public static List<Personal> buildByExcel(InputStream is, Integer beginLine, Integer sheetNum, String methodName, boolean isStr) {
+        beginLine=beginLine==null?0:beginLine;
+        sheetNum = sheetNum==null?0:sheetNum;
+        List<Personal> result = new ArrayList<>();
+//        Workbook wb = null;
+        try {
+            Workbook wb = WorkbookFactory.create(is);
+            Sheet s = wb.getSheetAt(sheetNum);
+            for(int i=beginLine;i<=s.getLastRowNum();i++) {
+                Row row = s.getRow(i);
+                Personal p = null;
+                if("buildPersonalJyj0423".equals(methodName)) {
+                    p = buildPersonalJyj0423(row, isStr);
+                } else if("buildPersonalYbj0423".equals(methodName)) {
+                    p = buildPersonalYbj0423(row, isStr);
+                }
+                if(p!=null) {
+                    result.add(p);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(is!=null) {is.close();}
+            } catch (IOException e) {
+            }
+        }
+        return result;
+    }
+
     public static List<Personal> buildByExcel0419(InputStream is, Integer beginLine, Integer sheetNum) {
         beginLine=beginLine==null?0:beginLine;
         sheetNum = sheetNum==null?0:sheetNum;
@@ -46,11 +79,99 @@ public class ExcelBasicTools {
     }
 
     /** 将一行数据转换成一个对象 */
+    public static Personal buildPersonalYbj0423(Row row, boolean isStr) {
+        Personal p = new Personal();
+        int index = 0;
+        for(Cell cell : row) {
+            String val = getBaseCellValue(cell, isStr);
+            switch (index) {
+                case 0: //序号
+                    p.setXh(buildInteger(val)); break;
+                case 1: //姓名
+                    p.setXm(val); break;
+                case 2: //家庭人数
+                    p.setJtrs(buildInteger(val)); break;
+                case 3: //姓名
+                    p.setXm(val); break;
+                case 4: //与户主关系
+                    p.setYhzgx(val); break;
+                case 5: //身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
+                    p.setSfzh(val); break;
+                case 6: //6-9医保相关
+                    p.setSfyb(val); break;
+                case 7:
+                    p.setCbxz(val); break;
+                case 8:
+                    p.setCbdw(val); break;
+                case 9:
+                    p.setSfhb(val); break;
+
+            }
+            index++;
+        }
+        return p;
+    }
+
+    /** 将一行数据转换成一个对象 */
+    public static Personal buildPersonalJyj0423(Row row, boolean isStr) {
+        Personal p = new Personal();
+        int index = 0;
+        for(Cell cell : row) {
+            String val = getBaseCellValue(cell, isStr);
+            switch (index) {
+                case 0: //序号
+                    p.setXh(buildInteger(val)); break;
+                case 1: //姓名
+                    p.setXm(val); break;
+                case 2: //家庭人数
+                    p.setJtrs(buildInteger(val)); break;
+                case 3: //姓名
+                    p.setXm(val); break;
+                case 4: //与户主关系
+                    p.setYhzgx(val); break;
+                case 5: //身份证号
+                    val = val.substring(0, 18); //处理身份证号
+                    p.setSfzh(val); break;
+                case 6: //性别
+                    p.setXb(val); break;
+                case 7: //民族
+                    p.setMz(val); break;
+                case 8: //年龄
+                    p.setNl(buildInteger(val)); break;
+                case 9: //是否是劳动力
+                    p.setSfsldl(val); break;
+                case 10: //家庭地址
+                    p.setJtdz(val); break;
+                case 11: //脱贫属性
+                    p.setPksx(val); break;
+                case 15: //15-21就学相关
+                    p.setSfzx(val); break;
+                case 16:
+                    p.setJyjd(val); break;
+                case 17:
+                    p.setJdxx(val); break;
+                case 18:
+                    p.setJdnj(val); break;
+                case 19:
+                    p.setSfxszz(val); break;
+                case 20:
+                    p.setZzxm(val); break;
+                case 21:
+                    p.setZzje(buildFloat(val)); break;
+
+            }
+            index++;
+        }
+        return p;
+    }
+
+    /** 将一行数据转换成一个对象 */
     public static Personal buildPersonal0419(Row row) {
         Personal p = new Personal();
         int index = 0;
         for(Cell cell : row) {
-            String val = getBaseCellValue(cell);
+            String val = getBaseCellValue(cell, true);
             switch (index) {
                 case 0: //序号
                     p.setXh(buildInteger(val)); break;
@@ -151,7 +272,7 @@ public class ExcelBasicTools {
         return result;
     }
 
-    public static String getBaseCellValue(Cell cell) {
+    public static String getBaseCellValue(Cell cell, boolean isStr) {
         String res = null;
         try {
             switch (cell.getCellType()) {
@@ -160,7 +281,11 @@ public class ExcelBasicTools {
                 case Cell.CELL_TYPE_BOOLEAN:
                     res = String.valueOf(cell.getBooleanCellValue()); break;
                 case Cell.CELL_TYPE_FORMULA:
-                    res = String.valueOf(cell.getCellFormula()); break;
+                    if(isStr) {
+                        res = String.valueOf(cell.getStringCellValue()); break;
+                    } else {
+                        res = String.valueOf(cell.getCellFormula()); break;
+                    }
 //                    res = String.valueOf(cell.getNumericCellValue()); break;
                 case Cell.CELL_TYPE_NUMERIC:
                     res = String.valueOf(cell.getNumericCellValue()); break;
@@ -171,9 +296,13 @@ public class ExcelBasicTools {
             }
         } catch (Exception e) {
 //            e.printStackTrace();
-            System.out.println(cell.getRowIndex()+"===="+cell.getCellType()+"=="+cell.getColumnIndex());
+            System.out.println(cell.getRowIndex()+"===="+cell.getCellType()+"=="+cell.getColumnIndex()+"==="+e.getMessage());
         }
         return res;
+    }
+
+    public static String getBaseCellValue(Cell cell) {
+        return getBaseCellValue(cell, false);
     }
 
     /** 将一行数据转换成一个对象 */

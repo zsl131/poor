@@ -17,7 +17,11 @@ public interface IDictionaryDao extends BaseRepository<Dictionary, Integer>, Jpa
 
     List<Dictionary> findByPid(Integer pid);
 
+    List<Dictionary> findByPcode(String pcode);
+
     Dictionary findByPidAndCode(Integer pid, String code);
+
+    Dictionary findByPcodeAndCode(String pcode, String code);
 
     @Query("FROM Dictionary WHERE code=?1 AND pid IS NULL")
     Dictionary findParentByCode(String code);
