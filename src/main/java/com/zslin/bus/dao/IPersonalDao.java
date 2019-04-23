@@ -50,10 +50,17 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.lx, COUNT(p.id)) FROM Personal p GROUP BY p.lx")
     List<PieDto> findPieByLx();
 
-    @Query("UPDATE Personal p SET p.zzpz=?2 WHERE p.sfzh=?1")
-    @Modifying
-    @Transactional
-    Integer test(String sfzh, String val);
+    /** 是否医保 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.sfyb, COUNT(p.id)) FROM Personal p GROUP BY p.sfyb")
+    List<PieDto> findPieBySfyb();
+
+    /** 参保险种 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.cbxz, COUNT(p.id)) FROM Personal p GROUP BY p.cbxz")
+    List<PieDto> findPieByCbxz();
+
+    /** 是否患病 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.sfhb, COUNT(p.id)) FROM Personal p GROUP BY p.sfhb")
+    List<PieDto> findPieBySfhb();
 
     /** 就学情况 */
     @Query("UPDATE Personal p SET p.sfzx=?1,p.jyjd=?2,p.jdxx=?3,p.jdnj=?4,p.sfxszz=?5,p.zzje=?6,p.zzxm=?7,p.zzxmmc=?8 WHERE p.sfzh=?9")
@@ -67,4 +74,11 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Transactional
     Integer updateYbj(String sfyb, String cbxz, String cbdw, String sfhb, String sfzh);
 
+    @Query("UPDATE Personal p SET p.cjhzpx=?1, p.wgdd=?2, p.qymc=?3, p.gwmc=?4, p.wgsj=?5, p.ygz=?6, p.cyxm=?7, p.cydd=?8, p.cysj=?9, p.ysr=?10, p.wgqx=?11, p.gyxgw=?12, p.zzcy=?13, p.wfwcyy=?14, p.pxxq=?15, p.lxdh=?16," +
+            "p.sfyb=?17, p.cbxz=?18, p.cbdw=?19, p.sfhb=?20 WHERE p.sfzh=?21")
+    @Modifying
+    @Transactional
+    Integer updateYbj(String cjhzpx, String wgdd, String qymc, String gwmc, String wgsj, Float ygz, String cyxm, String cydd, String cysj, Float ysr,
+                      String wgqx, String gyxgw, String zzcy, String wfwcyy, String pxxq, String lxdh,
+                      String sfyb, String cbxz, String cbdw, String sfhb, String sfzh);
 }

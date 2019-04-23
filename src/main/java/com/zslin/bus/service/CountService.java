@@ -59,4 +59,22 @@ public class CountService {
         List<PieDto> data = personalDao.findPieByLx();
         return JsonResult.getInstance().set("data", data);
     }
+
+    /** 是否医保饼状图 */
+    public JsonResult sfybPie(String params) {
+        List<PieDto> data = personalDao.findPieBySfyb();
+        return JsonResult.getInstance().set("data", data);
+    }
+
+    /** 参保险种饼状图 */
+    public JsonResult cbxzPie(String params) {
+        List<PieDto> data = personalDao.findPieByCbxz();
+        return JsonResult.getInstance().set("data", data);
+    }
+
+    /** 是否患病饼状图 */
+    public JsonResult sfhbPie(String params) {
+        List<PieDto> data = personalDao.findPieBySfhb();
+        return JsonResult.getInstance().set("data", data);
+    }
 }
