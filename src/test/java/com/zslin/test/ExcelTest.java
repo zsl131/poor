@@ -55,7 +55,8 @@ public class ExcelTest {
             for(Personal p : list) {
                 sfzh = p.getSfzh();
 //                Personal obj= personalDao.findBySfzh(sfzh);
-                Integer count = personalDao.updateYbj(p.getSfyb(), p.getCbxz(), p.getCbdw(), p.getSfhb(), sfzh);
+                Integer count = personalDao.updateYbj(p.getCjhzpx(), p.getWgdd(), p.getQymc(), p.getGwmc(), p.getWgsj(), p.getYgz(), p.getCyxm(), p.getCydd(), p.getCysj(), p.getYsr(),
+                        p.getWgqx(), p.getGyxgw(), p.getZzcy(), p.getWfwcyy(), p.getPxxq(), p.getLxdh(), p.getSfyb(), p.getCbxz(), p.getCbdw(), p.getSfhb(), sfzh);
                 if(count==null || count<=0) {
                     errorCount ++;
                     System.out.println("error========="+sfzh);
@@ -196,6 +197,7 @@ public class ExcelTest {
             String excelFile = "D:/temp/ylydbq.xls";
             FileInputStream fis = new FileInputStream(excelFile);
             List<Personal> list = ExcelBasicTools.buildByExcel(fis);
+            StringBuffer error = new StringBuffer();
             Town t = null;
             Personal hz = null;//户主
             for(Personal p : list) {
@@ -207,6 +209,7 @@ public class ExcelTest {
                     p.setXzmc(t.getName());
                 } else {
                     System.out.println(p.getXm()+"========"+p.getSfzh()+"-----未检索到乡镇");
+                    error.append(p.getXm()).append(":").append(p.getSfzh()).append("::未检索到乡镇：").append(p.getJtdz());
                 }
                 if(hz!=null) {
                     p.setHzid(hz.getId());
@@ -216,6 +219,7 @@ public class ExcelTest {
                 personalDao.save(p);
                 addFamily(p);
             }
+            ErrorTools.error2File("base.txt", error.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

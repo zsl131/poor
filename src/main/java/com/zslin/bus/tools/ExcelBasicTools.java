@@ -106,7 +106,41 @@ public class ExcelBasicTools {
                     p.setCbdw(val); break;
                 case 9:
                     p.setSfhb(val); break;
-
+                //16-32
+                case 16:
+                    p.setCjhzpx(val); break;
+                case 17:
+                    p.setWhcd(val); break;
+                case 18:
+                    p.setWgdd(val); break;
+                case 19:
+                    p.setQymc(val); break;
+                case 20:
+                    p.setGwmc(val); break;
+                case 21:
+                    p.setWgsj(val); break;
+                case 22:
+                    p.setYgz(buildFloat(val)); break;
+                case 23:
+                    p.setCyxm(val); break;
+                case 24:
+                    p.setCydd(val); break;
+                case 25:
+                    p.setCysj(val); break;
+                case 26:
+                    p.setYsr(buildFloat(val)); break;
+                case 27:
+                    p.setWgqx(val); break;
+                case 28:
+                    p.setGyxgw(val); break;
+                case 29:
+                    p.setZzcy(val); break;
+                case 30:
+                    p.setWfwcyy(val); break;
+                case 31:
+                    p.setPxxq(val); break;
+                case 32:
+                    p.setLxdh(val); break;
             }
             index++;
         }
