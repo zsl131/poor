@@ -1,5 +1,7 @@
 package com.zslin.bus.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zslin.basic.annotations.AdminAuth;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
@@ -69,5 +71,28 @@ public class PersonalService {
         Personal p = personalDao.findOne(id);
         List<Assets> assetsList = assetsDao.findByGssfzh(p.getSfzh());
         return JsonResult.getInstance().set("personal", p).set("assetsList", assetsList);
+    }
+
+    /** 修改人员基本信息 */
+    public JsonResult updateBasic(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            obj.setXm(p.getXm());
+            obj.setSfzh(p.getSfzh());
+            obj.setXb(p.getXb());
+            obj.setMz(p.getMz());
+            obj.setWhcd(p.getWhcd());
+            obj.setLxdh(p.getLxdh());
+            obj.setSfsldl(p.getSfsldl());
+            obj.setPksx(p.getPksx());
+            obj.setJtdz(p.getJtdz());
+            obj.setZplj(p.getZplj());
+            personalDao.save(obj);
+            return JsonResult.success("数据修改成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
     }
 }
