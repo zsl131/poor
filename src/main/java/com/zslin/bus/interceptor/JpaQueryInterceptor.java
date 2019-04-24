@@ -21,9 +21,20 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
         return sql;
     }
 
+    private String getAlias(String sql,String str) {
+        int index = sql.indexOf(str);
+        int n = index+str.length();
+        String tstr = sql.substring(n);
+        tstr = tstr.trim();
+        return tstr.split(" ")[0];
+
+    }
+
     private String handlePersonSql(String sql,int uid) {
         String result = "";
-        String s = "from t_personal personal0_";
+        String st = "from t_personal";
+        String a = getAlias(sql,st);
+        String s = st+" "+a;
         int index = sql.indexOf(s);
         String s1  = sql.substring(0,index+s.length());
         System.out.println(s1);
@@ -35,10 +46,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id=personal0_.xzid and tut.user_id=10 and ";
+            String swc = " tut.town_id="+a+".xzid and tut.user_id=10 and ";
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id=personal0_.xzid and tut.user_id=10 ";
+            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id=10 ";
             result = s1+sc+s2;
         }
         return result;
@@ -46,7 +57,9 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
 
     private String handleFamilySql(String sql,int uid) {
         String result = "";
-        String s = "from t_family family0_";
+        String st = "from t_family";
+        String a = getAlias(sql,st);
+        String s = st+" "+a;
         int index = sql.indexOf(s);
         String s1  = sql.substring(0,index+s.length());
         System.out.println(s1);
@@ -58,10 +71,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id=family0_.xzid and tut.user_id=10 and ";
+            String swc = " tut.town_id="+a+".xzid and tut.user_id=10 and ";
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id=family0_.xzid and tut.user_id=10 ";
+            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id=10 ";
             result = s1+sc+s2;
         }
         return result;

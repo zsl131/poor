@@ -1,10 +1,20 @@
 package org.zslin.bus.service;
 
 public class TestString {
+
+    private static String getAlias(String sql,String str) {
+        int index = sql.indexOf(str);
+        int n = index+str.length();
+        String tstr = sql.substring(n);
+        tstr = tstr.trim();
+        return tstr.split(" ")[0];
+
+    }
     public static void main(String[] args) {
         String sql = "select personal0_.xb as col_0_0_, count(personal0_.id) as col_1_0_ from" +
                 " t_personal personal0_ where a=b group by personal0_.xb";
-        String s = "from t_personal personal0_";
+        String s = "from t_personal";
+        System.out.println(getAlias(sql,s)+"----------------------");
         int index = sql.indexOf(s);
         String s1  = sql.substring(0,index+s.length());
         System.out.println(s1);

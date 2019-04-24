@@ -1,6 +1,5 @@
 package com.zslin.test;
 
-import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dto.PieDto;
@@ -29,14 +28,6 @@ public class NormalTest {
 
     @Autowired
     private IPersonalDao personalDao;
-
-    @Autowired
-    private IFamilyDao familyDao;
-
-    @Test
-    public void test05() {
-        familyDao.findAll();
-    }
 
     @Test
     public void test04() {
