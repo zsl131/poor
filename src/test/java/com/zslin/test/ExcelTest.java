@@ -127,12 +127,6 @@ public class ExcelTest {
                             sb.append(d.getName()).append(",");
                         }
                     }
-                    /*Dictionary d = dictionaryDao.findByPcodeAndCode("DICT_SUPPORT", code);
-                    if(d==null) {
-                        System.out.println("资助项目："+code+" 未找到");
-                    } else {
-                        sb.append(d.getName()).append(",");
-                    }*/
                 }
             }
         }

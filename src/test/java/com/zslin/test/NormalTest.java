@@ -7,6 +7,7 @@ import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.ExcelBasicTools;
+import com.zslin.bus.tools.PersonalTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,14 @@ public class NormalTest {
 
     @Autowired
     private IFamilyDao familyDao;
+
+    @Test
+    public void test06() {
+        List<Personal> list = personalDao.findAll();
+        for(Personal p : list) {
+            personalDao.updateJylx(PersonalTools.buildJyLx(p), p.getSfzh());
+        }
+    }
 
     @Test
     public void test05() {
