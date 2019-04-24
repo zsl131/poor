@@ -1,16 +1,23 @@
 package com.zslin.bus.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zslin.basic.annotations.AdminAuth;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
+import com.zslin.bus.dao.IAssetsDao;
+import com.zslin.bus.dao.IDictionaryDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.model.Assets;
+import com.zslin.bus.model.Dictionary;
 import com.zslin.bus.model.Family;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.PersonalTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -29,6 +36,12 @@ public class PersonalService {
 
     @Autowired
     private IPersonalDao personalDao;
+
+    @Autowired
+    private IAssetsDao assetsDao;
+
+    @Autowired
+    private IDictionaryDao dictionaryDao;
 
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
@@ -62,6 +75,113 @@ public class PersonalService {
     public JsonResult loadOne(String params) {
         Integer id = JsonTools.getId(params);
         Personal p = personalDao.findOne(id);
-        return JsonResult.getInstance().set("personal", p);
+        List<Assets> assetsList = assetsDao.findByGssfzh(p.getSfzh());
+        return JsonResult.getInstance().set("personal", p).set("assetsList", assetsList);
+    }
+
+    /** 修改人员基本信息 */
+    public JsonResult updateBasic(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            obj.setXm(p.getXm());
+            obj.setSfzh(p.getSfzh());
+            obj.setXb(p.getXb());
+            obj.setMz(p.getMz());
+            obj.setWhcd(p.getWhcd());
+            obj.setLxdh(p.getLxdh());
+            obj.setSfsldl(p.getSfsldl());
+            obj.setPksx(p.getPksx());
+            obj.setJtdz(p.getJtdz());
+            obj.setZplj(p.getZplj());
+            obj.setPxxq(p.getPxxq());
+            obj.setCjhzpx(p.getCjhzpx());
+            personalDao.save(obj);
+            return JsonResult.success("数据修改成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
+    }
+
+    /** 修改人员就业情况 */
+    public JsonResult updateWork(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            String jylx = p.getJylx(); //1-外出务工；2-自主创业；3-未就业
+            if("1".equals(jylx)) { //外出务工
+                obj.setWgdd(p.getWgdd());
+                obj.setQymc(p.getQymc());
+                obj.setGwmc(p.getGwmc());
+                obj.setWgsj(p.getWgsj());
+                obj.setYgz(p.getYgz());
+                obj.setJylx(PersonalTools.buildJyLx(obj));
+                personalDao.save(obj);
+            } else if("2".equals(jylx)) { //自主创业
+                obj.setCyxm(p.getCyxm());
+                obj.setCydd(p.getCydd());
+                obj.setCysj(p.getCysj());
+                obj.setYsr(p.getYsr());
+                obj.setJylx(PersonalTools.buildJyLx(obj));
+                personalDao.save(obj);
+            } else if("3".equals(jylx)) { //未就业
+                obj.setWgqx(p.getWgqx());
+                obj.setGyxgw(p.getGyxgw());
+                obj.setZzcy(p.getZzcy());
+                obj.setWfwcyy(p.getWfwcyy());
+                obj.setJylx(PersonalTools.buildJyLx(obj));
+                personalDao.save(obj);
+            }
+            return JsonResult.success("修改就业情况成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("修改出错："+e.getMessage());
+        }
+    }
+
+    /** 修改人员搬迁信息 */
+    public JsonResult updateMove(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            obj.setBqsj(p.getBqsj());
+            obj.setBqdd(p.getBqdd());
+            obj.setBz(p.getBz());
+            personalDao.save(obj);
+            return JsonResult.success("修改搬迁信息成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
+    }
+
+    /** 修改人员就学信息 */
+    public JsonResult updateStudy(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            String sfxszz = p.getSfxszz(); //是否享受资助
+            obj.setSfzx(p.getSfzx());
+            obj.setJyjd(p.getJyjd());
+            obj.setJdxx(p.getJdxx());
+            obj.setJdnj(p.getJdnj());
+            obj.setSfxszz(sfxszz);
+            if("是".equals(sfxszz)) {
+                obj.setZzje(p.getZzje());
+                obj.setZzxm(p.getZzxm());
+                List<Dictionary> dataList = dictionaryDao.findByPcode("DICT_SUPPORT");
+                obj.setZzxmmc(PersonalTools.buildZzxmmc(dataList, p.getZzxm()));
+            } else {
+                obj.setZzje(0f);
+                obj.setZzxm("");
+                obj.setZzxmmc("");
+            }
+            personalDao.save(obj);
+            return JsonResult.success("修改就学信息成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
     }
 }

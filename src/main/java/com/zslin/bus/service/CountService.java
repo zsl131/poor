@@ -77,4 +77,10 @@ public class CountService {
         List<PieDto> data = personalDao.findPieBySfhb();
         return JsonResult.getInstance().set("data", data);
     }
+
+    /** 就业类型饼状图 */
+    public JsonResult jylxPie(String params) {
+        List<PieDto> data = personalDao.findPieByJylx();
+        return JsonResult.getInstance().set("data", data);
+    }
 }

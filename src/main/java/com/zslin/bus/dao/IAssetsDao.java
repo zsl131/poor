@@ -4,8 +4,12 @@ import com.zslin.basic.repository.BaseRepository;
 import com.zslin.bus.model.Assets;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 /**
  * Created by zsl on 2019/4/15.
  */
 public interface IAssetsDao extends BaseRepository<Assets, Integer>, JpaSpecificationExecutor<Assets> {
+
+    List<Assets> findByGssfzh(String gssfzh);
 }

@@ -216,6 +216,17 @@ public class Personal {
     /** 照片路径 */
     private String zplj;
 
+    /** 就业类型：外出务工；自主创业；未就业 */
+    private String jylx;
+
+    public String getJylx() {
+        return jylx;
+    }
+
+    public void setJylx(String jylx) {
+        this.jylx = jylx;
+    }
+
     public String getZzxmmc() {
         return zzxmmc;
     }

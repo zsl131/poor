@@ -1,11 +1,13 @@
 package com.zslin.test;
 
+import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.ExcelBasicTools;
+import com.zslin.bus.tools.PersonalTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import java.util.List;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ActiveProfiles("kh")
+@ActiveProfiles("zsl")
 public class NormalTest {
 
     @Autowired
@@ -29,10 +31,20 @@ public class NormalTest {
     @Autowired
     private IPersonalDao personalDao;
 
+    @Autowired
+    private IFamilyDao familyDao;
+
     @Test
-    public void test04() {
-        Integer res = personalDao.test("530628200105291721", null);
-        System.out.println("res:::"+res);
+    public void test06() {
+        List<Personal> list = personalDao.findAll();
+        for(Personal p : list) {
+            personalDao.updateJylx(PersonalTools.buildJyLx(p), p.getSfzh());
+        }
+    }
+
+    @Test
+    public void test05() {
+        familyDao.findAll();
     }
 
     @Test

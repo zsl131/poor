@@ -35,6 +35,11 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Transactional
     void updateXb(String sfzh, String xb);
 
+    @Query("UPDATE Personal p SET p.jylx=?1 WHERE p.sfzh=?2")
+    @Modifying
+    @Transactional
+    void updateJylx(String jylx, String sfzh);
+
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.xb, COUNT(p.id)) FROM Personal p GROUP BY p.xb")
     List<PieDto> findPieByXb();
 
@@ -61,6 +66,10 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     /** 是否患病 */
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.sfhb, COUNT(p.id)) FROM Personal p GROUP BY p.sfhb")
     List<PieDto> findPieBySfhb();
+
+    /** 就业类型 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.jylx, COUNT(p.id)) FROM Personal p GROUP BY p.jylx")
+    List<PieDto> findPieByJylx();
 
     /** 就学情况 */
     @Query("UPDATE Personal p SET p.sfzx=?1,p.jyjd=?2,p.jdxx=?3,p.jdnj=?4,p.sfxszz=?5,p.zzje=?6,p.zzxm=?7,p.zzxmmc=?8 WHERE p.sfzh=?9")

@@ -96,4 +96,11 @@ public class DictionaryService {
         dictionaryDao.delete(id);
         return JsonResult.success("删除成功");
     }
+
+    /** 获取数据字典 */
+    public JsonResult listByPcode(String params) {
+        String pcode = JsonTools.getJsonParam(params, "pcode");
+        List<Dictionary> list = dictionaryDao.findByPcode(pcode);
+        return JsonResult.success("获取成功").set("list", list);
+    }
 }
