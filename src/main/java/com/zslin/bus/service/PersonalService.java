@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zslin.basic.annotations.AdminAuth;
 import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
+import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
@@ -56,18 +57,20 @@ public class PersonalService {
         String type = JsonTools.getJsonParam(params, "type"); //类型，f-family，p-personal
         Integer id = JsonTools.getId(params); //ID
         Family f = null;
+        Personal p = null;
         if("f".equals(type)) {
             f = familyDao.findOne(id);
+            p = personalDao.findBySfzh(f.getSfzh());
         } else if("p".equals(type)) {
-            Personal p = personalDao.findOne(id);
+            p = personalDao.findOne(id);
             f = familyDao.findBySfzh(p.getHzsfzh());
-            result.set("personal", p);
         }
         if(f!=null) {
             List<Personal> personalList = personalDao.findByHzsfzh(f.getSfzh());
             result.set("personalList", personalList);
         }
-        result.set("family", f);
+        List<Assets> assetsList = assetsDao.findByHzsfzh(p.getHzsfzh());
+        result.set("family", f).set("personal", p).set("assetsList", assetsList);
 
         return result;
     }
@@ -80,6 +83,7 @@ public class PersonalService {
     }
 
     /** 修改人员基本信息 */
+    @Function("修改人员基本信息")
     public JsonResult updateBasic(String params) {
         try {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
@@ -105,6 +109,7 @@ public class PersonalService {
     }
 
     /** 修改人员就业情况 */
+    @Function("修改人员就业信息")
     public JsonResult updateWork(String params) {
         try {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
@@ -141,6 +146,7 @@ public class PersonalService {
     }
 
     /** 修改人员搬迁信息 */
+    @Function("修改人员搬迁信息")
     public JsonResult updateMove(String params) {
         try {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
@@ -157,6 +163,7 @@ public class PersonalService {
     }
 
     /** 修改人员就学信息 */
+    @Function("修改人员就学信息")
     public JsonResult updateStudy(String params) {
         try {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
@@ -179,6 +186,66 @@ public class PersonalService {
             }
             personalDao.save(obj);
             return JsonResult.success("修改就学信息成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
+    }
+
+    /** 修改人员保险信息 */
+    @Function("修改人员保险信息")
+    public JsonResult updateSafe(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            obj.setJkzk(p.getJkzk());
+            obj.setSfylbx(p.getSfylbx());
+            obj.setSfyb(p.getSfyb());
+            obj.setCbxz(p.getCbxz());
+            obj.setCbdw(p.getCbdw());
+            obj.setSfhb(p.getSfhb());
+            personalDao.save(obj);
+            return JsonResult.success("修改保险信息成功");
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return JsonResult.error("数据保存失败："+e.getMessage());
+        }
+    }
+
+    @Function("添加资产信息")
+    public JsonResult addAssets(String params) {
+        try {
+            Assets a = JSONObject.toJavaObject(JSON.parseObject(params), Assets.class);
+            Personal p = personalDao.findOne(a.getGsid());
+            a.setGssfzh(p.getSfzh());
+            a.setGsxm(p.getXm());
+            a.setHzid(p.getHzid());
+            a.setHzsfzh(p.getHzsfzh());
+            a.setHzxm(p.getHzxm());
+            assetsDao.save(a);
+            return JsonResult.success("资产图片保存成功");
+        } catch (Exception e) {
+            return JsonResult.success("资产图片保存失败："+e.getMessage());
+        }
+    }
+
+    /** 修改人员产业信息 */
+    @Function("修改人员产业信息")
+    public JsonResult updateIndustry(String params) {
+        try {
+            Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
+            Personal obj = personalDao.findOne(p.getId());
+            Float zjd = p.getZjd(), ld = p.getLd(), gd = p.getGd(), zzdmj = p.getZzdmj();
+            zjd = zjd==null?0f:zjd; ld = ld==null?0:ld; gd = gd==null?0:gd; zzdmj = zzdmj==null?0:zzdmj;
+            String zzpz = p.getZzpz();
+            obj.setZjd(zjd);
+            obj.setLd(ld);
+            obj.setGd(gd);
+            obj.setZzpz(zzpz);
+            obj.setZzdmj(zzdmj);
+            personalDao.save(obj);
+            familyDao.updateIndustry(zjd, ld, gd, zzpz, zzdmj, obj.getHzsfzh());
+            return JsonResult.success("修改产业信息成功");
         } catch (Exception e) {
 //            e.printStackTrace();
             return JsonResult.error("数据保存失败："+e.getMessage());

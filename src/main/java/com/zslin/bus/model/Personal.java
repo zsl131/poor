@@ -181,16 +181,19 @@ public class Personal {
     private String pxxq;
 
     /** 宅基地，面积 */
-    private Float zjd;
+    private Float zjd = 0f;
+
+    /** 林地面积 */
+    private Float ld = 0f;
 
     /** 耕地，面积 */
-    private Float gd;
+    private Float gd = 0f;
 
     /** 种植品种 */
     private String zzpz;
 
     /** 种植地面积 */
-    private Float zzdmj;
+    private Float zzdmj = 0f;
 
     /** 户主ID */
     private Integer hzid;
@@ -218,6 +221,14 @@ public class Personal {
 
     /** 就业类型：外出务工；自主创业；未就业 */
     private String jylx;
+
+    public Float getLd() {
+        return ld;
+    }
+
+    public void setLd(Float ld) {
+        this.ld = ld;
+    }
 
     public String getJylx() {
         return jylx;

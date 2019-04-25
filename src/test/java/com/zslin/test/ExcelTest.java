@@ -43,6 +43,23 @@ public class ExcelTest {
     private IDictionaryDao dictionaryDao;
 
     @Test
+    public void test11() {
+        try {
+            String excelFile = "D:/temp/ylydbq0419.xls";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel0419(fis, 4, 0);
+            for(Personal p : list) {
+                if("532129194703292129".equals(p.getSfzh())) {
+                    System.out.println("========="+p.getLxdh());
+                }
+                personalDao.updateLxdh(p.getLxdh(), p.getSfzh());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void test10() {
         try {
             String excelFile = "D:/temp/ybj.xlsx";

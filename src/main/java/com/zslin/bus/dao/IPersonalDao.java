@@ -90,4 +90,9 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     Integer updateYbj(String cjhzpx, String wgdd, String qymc, String gwmc, String wgsj, Float ygz, String cyxm, String cydd, String cysj, Float ysr,
                       String wgqx, String gyxgw, String zzcy, String wfwcyy, String pxxq, String lxdh,
                       String sfyb, String cbxz, String cbdw, String sfhb, String sfzh);
+
+    @Query("UPDATE Personal p SET p.lxdh=?1 WHERE p.sfzh=?2")
+    @Modifying
+    @Transactional
+    void updateLxdh(String lxdh, String sfzh);
 }

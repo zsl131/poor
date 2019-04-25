@@ -63,19 +63,30 @@ public class Family {
     private String xzmc;
 
     /** 宅基地，面积 */
-    private Float zjd;
+    private Float zjd = 0f;
+
+    /** 林地，面积 */
+    private Float ld = 0f;
 
     /** 耕地，面积 */
-    private Float gd;
+    private Float gd = 0f;
 
     /** 种植品种 */
     private String zzpz;
 
     /** 种植地面积 */
-    private Float zzdmj;
+    private Float zzdmj = 0f;
 
     /** 类型：卡户/随迁户 */
     private String lx;
+
+    public Float getLd() {
+        return ld;
+    }
+
+    public void setLd(Float ld) {
+        this.ld = ld;
+    }
 
     public String getLx() {
         return lx;

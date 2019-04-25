@@ -1,5 +1,7 @@
 package com.zslin.bus.common.controller;
 
+import com.zslin.basic.dao.IUserDao;
+import com.zslin.basic.model.User;
 import com.zslin.basic.tools.Base64Utils;
 import com.zslin.basic.tools.NormalTools;
 import com.zslin.bus.common.annotations.Function;
@@ -12,6 +14,9 @@ import com.zslin.bus.common.model.ApiToken;
 import com.zslin.bus.common.model.ApiTokenCode;
 import com.zslin.bus.common.model.Record;
 import com.zslin.bus.common.tools.JsonTools;
+import com.zslin.bus.dao.IUserTownDao;
+import com.zslin.bus.threadlocal.RequestDto;
+import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
 import com.zslin.bus.tools.JsonParamTools;
 import com.zslin.bus.tools.JsonResult;
 import org.springframework.beans.factory.BeanFactory;
@@ -23,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * Created by zsl on 2018/7/3.
@@ -46,6 +52,12 @@ public class ApiController {
     @Autowired
     private IRecordDao recordDao;
 
+    @Autowired
+    private IUserDao userDao;
+
+    @Autowired
+    private IUserTownDao userTownDao;
+
     /**
      * 此接口调用的业务接口有一个名为"handle"的方法，此方法接受两个String类型的参数action和params
      *  - action - 具体的处理业务
@@ -56,6 +68,9 @@ public class ApiController {
      */
     @RequestMapping(value = "baseRequest")
     public JsonResult baseRequest(HttpServletRequest request, HttpServletResponse response) {
+
+        SystemThreadLocalHolder.initRequestDto(new RequestDto(123, 111));
+
         String token = request.getHeader("auth-token"); //身份认证token
         String apiCode = request.getHeader("api-code"); //接口访问编码
         if(token == null || "".equals(token) || apiCode==null || "".equals(apiCode)) {
@@ -77,6 +92,8 @@ public class ApiController {
 
                 params = JsonParamTools.rebuildParams(params, request);
 
+                buildThreadLocal(params); //
+
                 method = obj.getClass().getMethod(actionName, params.getClass());
                 hasParams = true;
             }
@@ -92,6 +109,18 @@ public class ApiController {
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.getInstance().fail("数据请求失败："+e.getMessage());
+        }
+    }
+
+    private void buildThreadLocal(String params) {
+        try {
+            String username = JsonTools.getHeaderParams(params, "username");
+            User user = userDao.findByUsername(username);
+            List<Integer> townIds = userTownDao.findTownId(user.getId());
+            Integer isAll = townIds.contains(1)?1:0; //
+            SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), isAll));
+        } catch (Exception e) {
+            SystemThreadLocalHolder.remove();
         }
     }
 
@@ -150,6 +179,7 @@ public class ApiController {
 //                Method method = obj.getClass().getMethod(methodName, (params==null || "".equals(params.trim()))?:params.getClass());
                 JsonResult result;
                 if(hasParams) {
+                    buildThreadLocal(params);
                     result = (JsonResult) method.invoke(obj, params);
                 } else {
                     result = (JsonResult) method.invoke(obj);

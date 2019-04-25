@@ -1,19 +1,24 @@
 package com.zslin.bus.interceptor;
 
+import com.zslin.bus.threadlocal.RequestDto;
+import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
 import org.hibernate.EmptyInterceptor;
 
 public class JpaQueryInterceptor extends EmptyInterceptor {
     @Override
     public String onPrepareStatement(String sql) {
-        int isc = 1;
-        if(isc==0) return sql;
-        int uid = 10;
-        if(sql.indexOf("from t_personal")>=0) {
+
+        RequestDto dto = SystemThreadLocalHolder.getRequestDto();
+
+        int isc = dto==null?1:dto.getIsAll();
+        if(isc==1) return sql;
+        int uid = dto==null?0:dto.getUid();
+        if(sql.contains("from t_personal")) {
             //仅仅只对t_personal和t_family两张表进行处理
             String sql1 = handlePersonSql(sql,uid);
             return sql1;
         }
-        if(sql.indexOf("from t_family")>=0) {
+        if(sql.contains("from t_family")) {
             System.out.println(sql);
             String sql1 = handleFamilySql(sql,uid);
             return sql1;
@@ -46,10 +51,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id="+a+".xzid and tut.user_id=10 and ";
+            String swc = " tut.town_id="+a+".xzid and tut.user_id="+uid+" and ";
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id=10 ";
+            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id="+uid+" ";
             result = s1+sc+s2;
         }
         return result;
@@ -71,10 +76,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id="+a+".xzid and tut.user_id=10 and ";
+            String swc = " tut.town_id="+a+".xzid and tut.user_id="+uid+" and ";
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id=10 ";
+            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id="+uid+" ";
             result = s1+sc+s2;
         }
         return result;

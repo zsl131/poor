@@ -12,4 +12,14 @@ import java.util.List;
 public interface IAssetsDao extends BaseRepository<Assets, Integer>, JpaSpecificationExecutor<Assets> {
 
     List<Assets> findByGssfzh(String gssfzh);
+
+    List<Assets> findByGsid(Integer gsid);
+
+    List<Assets> findByHzid(Integer hzid);
+
+    List<Assets> findByHzsfzh(String hzsfzh);
+
+    List<Assets> findByGsidAndMc(Integer gsid, String mc);
+
+    List<Assets> findByHzidAndMc(Integer hzid, String mc);
 }
