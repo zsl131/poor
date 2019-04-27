@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -45,15 +46,30 @@ public class ExcelTest {
     @Test
     public void test11() {
         try {
+            Long start = System.currentTimeMillis();
             String excelFile = "D:/temp/ylydbq0419.xls";
             FileInputStream fis = new FileInputStream(excelFile);
             List<Personal> list = ExcelBasicTools.buildByExcel0419(fis, 4, 0);
+            System.out.println("total::"+list.size());
+            String lxdh = null;
+            Integer amount = 0;
             for(Personal p : list) {
-                if("532129194703292129".equals(p.getSfzh())) {
-                    System.out.println("========="+p.getLxdh());
+                lxdh = p.getLxdh();
+                if("532129198202211763".equals(p.getSfzh()) || "532129197807221732".equals(p.getSfzh())) {
+                    System.out.println("========="+p);
                 }
-                personalDao.updateLxdh(p.getLxdh(), p.getSfzh());
+                if(lxdh!=null) {
+                    System.out.println(p.getSfzh()+"======"+lxdh);
+                    if(lxdh.contains("E10")) {
+                        DecimalFormat df = new DecimalFormat("#");
+                        lxdh = df.format(Double.parseDouble(lxdh));
+                    }
+                    personalDao.updateLxdh(lxdh, p.getSfzh());
+                    amount ++;
+                }
             }
+            Long end = System.currentTimeMillis();
+            System.out.println("花时间："+((end-start)/1000) + " 秒。处理："+amount+" 条");
         } catch (Exception e) {
             e.printStackTrace();
         }

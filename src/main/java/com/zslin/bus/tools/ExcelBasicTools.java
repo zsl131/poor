@@ -165,7 +165,7 @@ public class ExcelBasicTools {
                 case 4: //与户主关系
                     p.setYhzgx(val); break;
                 case 5: //身份证号
-                    val = val.substring(0, 18); //处理身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
                     p.setSfzh(val); break;
                 case 6: //性别
                     p.setXb(val); break;
@@ -218,6 +218,7 @@ public class ExcelBasicTools {
                 case 4: //与户主关系
                     p.setYhzgx(val); break;
                 case 5: //身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
                     p.setSfzh(val); break;
                 case 6: //性别
                     p.setXb(val); break;
@@ -357,6 +358,7 @@ public class ExcelBasicTools {
                 case 4: //与户主关系
                     p.setYhzgx(val); break;
                 case 5: //身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
                     p.setSfzh(val); break;
                 case 6: //性别
                     p.setXb(val); break;

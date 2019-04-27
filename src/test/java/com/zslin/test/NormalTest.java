@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -33,6 +34,13 @@ public class NormalTest {
 
     @Autowired
     private IFamilyDao familyDao;
+
+    @Test
+    public void test07() {
+        String str = "1.3248582209E10";
+        DecimalFormat df = new DecimalFormat("#");
+        System.out.println(df.format(Double.parseDouble(str)));
+    }
 
     @Test
     public void test06() {

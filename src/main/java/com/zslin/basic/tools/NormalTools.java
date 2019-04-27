@@ -22,6 +22,15 @@ public class NormalTools {
      */
     public static Boolean isImageFile(String fileName) {
         String [] img_type = new String[]{".jpg", ".jpeg", ".png", ".gif", ".bmp"};
+        return isTargetFile(fileName, img_type);
+    }
+
+    public static boolean isZipFile(String fileName) {
+        String [] img_type = new String[]{".zip"};
+        return isTargetFile(fileName, img_type);
+    }
+
+    private static boolean isTargetFile(String fileName, String [] img_type) {
         if(fileName==null) {return false;}
         fileName = fileName.toLowerCase();
         for(String type : img_type) {

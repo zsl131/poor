@@ -2,6 +2,7 @@ package com.zslin.bus.common.controller;
 
 import com.zslin.basic.tools.ConfigTools;
 import com.zslin.basic.tools.NormalTools;
+import com.zslin.bus.tools.PictureTools;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class UploadController {
 
     @Autowired
     private ConfigTools configTools;
+
+    @Autowired
+    private PictureTools pictureTools;
 
     private static final String PATH_PRE = "/wangeditor/images";
     private static final String UPLOAD_PATH_PRE = "/publicFile/upload";
@@ -75,16 +79,11 @@ public class UploadController {
      */
     @RequestMapping(value = "uploadFile")
     public String uploadFile(@RequestParam("file")MultipartFile[] multipartFile,String extra) throws IOException {
-//        System.out.println("======="+path+"=====length:"+multipartFile.length);
         String result = "error";
         if(multipartFile!=null && multipartFile.length>=1) {
-            MultipartFile mf = multipartFile[0];
-//                System.out.println(mf.getName() + "===" + mf.getOriginalFilename() + "===" + mf.getContentType());
-            FileInputStream fileInputStream = (FileInputStream) mf.getInputStream();
 
             MultipartFile file = multipartFile[0];
             String fileName = file.getOriginalFilename();
-//                    System.out.println("========fileName::"+fileName);
             if (fileName != null && !"".equalsIgnoreCase(fileName.trim()) && NormalTools.isImageFile(fileName)) {
                 File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + UUID.randomUUID().toString() + NormalTools.getFileType(fileName));
                 result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
@@ -101,7 +100,6 @@ public class UploadController {
 
     //w:4000_h:2400
     private String buildExtra(String extra, String field) {
-        System.out.println("========="+extra);
         String result = null;
         try {
             String [] array = extra.split("_");
@@ -110,6 +108,37 @@ public class UploadController {
                 if(field.equals(tmp[0])) {result = tmp[1];}
             }
         } catch (Exception e) {
+        }
+        return result;
+    }
+
+    /**
+     * 上传文件，直接以multipartFile形式
+     * @param multipartFile
+     * @param extra 扩展参数
+     * @return 返回文件名
+     * @throws IOException
+     */
+    @RequestMapping(value = "uploadZipFile")
+    public String uploadZipFile(@RequestParam("file")MultipartFile[] multipartFile,String extra) throws IOException {
+//        System.out.println("==========="+extra);
+        String result = "error";
+        if(multipartFile!=null && multipartFile.length>=1) {
+            MultipartFile file = multipartFile[0];
+            String fileName = file.getOriginalFilename();
+//                    System.out.println("========fileName::"+fileName);
+            if (fileName != null && !"".equalsIgnoreCase(fileName.trim()) && NormalTools.isZipFile(fileName)) {
+                File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + "zip" + File.separator + UUID.randomUUID().toString() + NormalTools.getFileType(fileName));
+                result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
+                FileUtils.copyInputStreamToFile(file.getInputStream(), outFile);
+                String hqfs = buildExtra(extra, "hqfs"); Integer xzid = Integer.parseInt(buildExtra(extra, "xzid"));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pictureTools.readFile(hqfs, xzid, outFile);
+                    }
+                }).start();
+            }
         }
         return result;
     }
