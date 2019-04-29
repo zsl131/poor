@@ -3,7 +3,9 @@ package com.zslin.bus.dao;
 import com.zslin.basic.repository.BaseRepository;
 import com.zslin.bus.model.UserTown;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,4 +27,9 @@ public interface IUserTownDao extends BaseRepository<UserTown, Integer>, JpaSpec
     String findLevelByUser(Integer userId);
 
     UserTown findByUserIdAndTownId(Integer userId, Integer townId);
+
+    @Query("DELETE FROM UserTown u WHERE u.userId=?1")
+    @Modifying
+    @Transactional
+    void deleteTownByUserId(Integer userId);
 }

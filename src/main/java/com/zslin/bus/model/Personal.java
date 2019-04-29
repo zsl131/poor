@@ -129,8 +129,14 @@ public class Personal {
 
     /** 就业情况-外出务工 */
 
-    /** 务工地域 */
+    /** 务工地域， 1-省外；2-省内县外；3-县内*/
     private String wgdy;
+
+    /** 务工省份 */
+    private String wgsf;
+
+    /** 务工城市 */
+    private String wgcs;
 
     /** 务工地点 */
     private String wgdd;
@@ -221,6 +227,28 @@ public class Personal {
 
     /** 就业类型：外出务工；自主创业；未就业 */
     private String jylx;
+
+    /** 村庄ID */
+    private Integer czid;
+
+    /** 村庄名称 */
+    private String czmc;
+
+    public Integer getCzid() {
+        return czid;
+    }
+
+    public void setCzid(Integer czid) {
+        this.czid = czid;
+    }
+
+    public String getCzmc() {
+        return czmc;
+    }
+
+    public void setCzmc(String czmc) {
+        this.czmc = czmc;
+    }
 
     public Float getLd() {
         return ld;

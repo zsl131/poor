@@ -3,19 +3,18 @@ package com.zslin.bus.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zslin.basic.annotations.AdminAuth;
-import com.zslin.basic.repository.SimplePageBuilder;
 import com.zslin.basic.repository.SimpleSortBuilder;
 import com.zslin.basic.tools.MyBeanUtils;
 import com.zslin.bus.common.annotations.Function;
-import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
-import com.zslin.bus.common.tools.QueryTools;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dao.IUserTownDao;
+import com.zslin.bus.dto.TownDto;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,21 +33,39 @@ public class TownService {
     @Autowired
     private IUserTownDao userTownDao;
 
+    @Autowired
+    private TownTools townTools;
+
     public JsonResult list(String params) {
-        QueryListDto qld = QueryTools.buildQueryListDto(params);
+        /*QueryListDto qld = QueryTools.buildQueryListDto(params);
         Page<Town> res = townDao.findAll(QueryTools.getInstance().buildSearch(qld.getConditionDtoList()),
                 SimplePageBuilder.generate(qld.getPage(), qld.getSize(), SimpleSortBuilder.generateSort(qld.getSort())));
-        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent());
+        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent());*/
+
+        JsonResult result = JsonResult.getInstance();
+        Integer pid = 0;
+        try { pid = Integer.parseInt(JsonTools.getJsonParam(params, "pid"));} catch (Exception e) {pid=0;}
+        List<TownDto> treeDto = townTools.buildTown();
+        Sort sort = SimpleSortBuilder.generateSort("orderNo");
+        List<Town> list ;
+        if(pid==0 || pid==1) {
+            list = townDao.findParent(sort);
+        } else {
+            list = townDao.findByPid(pid, sort);
+            result.set("town", townDao.findOne(pid));
+        }
+        return result.set("size", list.size()).set("data", list).set("treeDto", treeDto);
     }
 
     public JsonResult listByLogin(String params) {
         String username = JsonTools.getHeaderParams(params, "username"); //
         String level = JsonTools.getJsonParam(params, "level");
+        Sort sort = SimpleSortBuilder.generateSort("orderNo");
         List<Town> townList ;
         if("10".equals(level)) { //如果是县级
             townList = townDao.findAll();
         } else {
-            townList = townDao.findByUsername(username);
+            townList = townDao.findByUsername(username, sort);
         }
 //        System.out.println("username::"+username);
         return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList));
@@ -79,7 +96,7 @@ public class TownService {
         Town obj = JSONObject.toJavaObject(JSON.parseObject(params), Town.class);
         if(obj.getId()!=null && obj.getId()>0) { //修改
             Town t = townDao.getOne(obj.getId());
-            MyBeanUtils.copyProperties(obj, t);
+            MyBeanUtils.copyProperties(obj, t, "id", "pid", "pname");
             townDao.save(t);
         } else {
             townDao.save(obj);

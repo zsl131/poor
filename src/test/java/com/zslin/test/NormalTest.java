@@ -3,6 +3,7 @@ package com.zslin.test;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.dao.IUserTownDao;
 import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
@@ -34,6 +35,14 @@ public class NormalTest {
 
     @Autowired
     private IFamilyDao familyDao;
+
+    @Autowired
+    private IUserTownDao userTownDao;
+
+    @Test
+    public void test08() {
+        userTownDao.deleteTownByUserId(2);
+    }
 
     @Test
     public void test07() {

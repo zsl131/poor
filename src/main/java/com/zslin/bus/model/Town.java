@@ -26,6 +26,37 @@ public class Town {
     @Lob
     private String remark;
 
+    private Integer pid;
+
+    private String pname;
+
+    @Column(name = "order_no")
+    private Integer orderNo;
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
     /** 图片路径 */
     @Column(name = "pic_url")
     private String picUrl;

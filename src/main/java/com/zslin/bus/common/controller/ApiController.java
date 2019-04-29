@@ -117,7 +117,7 @@ public class ApiController {
             String username = JsonTools.getHeaderParams(params, "username");
             User user = userDao.findByUsername(username);
             List<Integer> townIds = userTownDao.findTownId(user.getId());
-            Integer isAll = townIds.contains(1)?1:0; //
+            Integer isAll = townIds.contains(1)?1:0; //如果包含1，表示是全县
             SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), isAll));
         } catch (Exception e) {
             SystemThreadLocalHolder.remove();

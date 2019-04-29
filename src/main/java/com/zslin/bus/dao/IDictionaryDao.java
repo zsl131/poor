@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IDictionaryDao extends BaseRepository<Dictionary, Integer>, JpaSpecificationExecutor<Dictionary> {
 
-    @Query("FROM Dictionary WHERE pid IS NULL")
+    @Query("FROM Dictionary d WHERE d.pid IS NULL")
     List<Dictionary> findParent();
 
     List<Dictionary> findByPid(Integer pid);
@@ -23,6 +23,6 @@ public interface IDictionaryDao extends BaseRepository<Dictionary, Integer>, Jpa
 
     Dictionary findByPcodeAndCode(String pcode, String code);
 
-    @Query("FROM Dictionary WHERE code=?1 AND pid IS NULL")
+    @Query("FROM Dictionary d WHERE d.code=?1 AND d.pid IS NULL")
     Dictionary findParentByCode(String code);
 }

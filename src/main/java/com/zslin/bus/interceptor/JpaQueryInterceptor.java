@@ -51,10 +51,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id="+a+".xzid and tut.user_id="+uid+" and ";
+            String swc = " (tut.town_id="+a+".xzid OR tut.town_id="+a+".czid) and tut.user_id="+uid+" and "; //xzid:乡镇id，czid:村庄id
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id="+uid+" ";
+            sc = sc+" where (tut.town_id="+a+".xzid OR tut.town_id="+a+".czid) and tut.user_id="+uid+" "; //xzid:乡镇id，czid:村庄id
             result = s1+sc+s2;
         }
         return result;
@@ -76,10 +76,10 @@ public class JpaQueryInterceptor extends EmptyInterceptor {
             int tindex = s2.indexOf("where");
             String sw1 = s2.substring(0,tindex+"where".length());
             String sw2 = s2.substring(tindex+"where".length());
-            String swc = " tut.town_id="+a+".xzid and tut.user_id="+uid+" and ";
+            String swc = " (tut.town_id="+a+".xzid OR tut.town_id="+a+".czid) and tut.user_id="+uid+" and "; //xzid:乡镇id，czid:村庄id
             result = s1+sc+sw1+swc+sw2;
         } else {
-            sc = sc+" where tut.town_id="+a+".xzid and tut.user_id="+uid+" ";
+            sc = sc+" where (tut.town_id="+a+".xzid OR tut.town_id="+a+".czid) and tut.user_id="+uid+" "; //xzid:乡镇id，czid:村庄id
             result = s1+sc+s2;
         }
         return result;

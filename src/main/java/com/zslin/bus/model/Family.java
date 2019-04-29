@@ -80,6 +80,28 @@ public class Family {
     /** 类型：卡户/随迁户 */
     private String lx;
 
+    /** 村庄ID */
+    private Integer czid;
+
+    /** 村庄名称 */
+    private String czmc;
+
+    public Integer getCzid() {
+        return czid;
+    }
+
+    public void setCzid(Integer czid) {
+        this.czid = czid;
+    }
+
+    public String getCzmc() {
+        return czmc;
+    }
+
+    public void setCzmc(String czmc) {
+        this.czmc = czmc;
+    }
+
     public Float getLd() {
         return ld;
     }
