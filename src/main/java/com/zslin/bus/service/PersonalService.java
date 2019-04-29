@@ -13,6 +13,7 @@ import com.zslin.bus.dao.IAssetsDao;
 import com.zslin.bus.dao.IDictionaryDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Assets;
 import com.zslin.bus.model.Dictionary;
 import com.zslin.bus.model.Family;
@@ -48,7 +49,8 @@ public class PersonalService {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
         Page<Personal> res = personalDao.findAll(QueryTools.getInstance().buildSearch(qld.getConditionDtoList()),
                 SimplePageBuilder.generate(qld.getPage(), qld.getSize(), SimpleSortBuilder.generateSort(qld.getSort())));
-        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent());
+        List<PieDto> xb = personalDao.findPieByXb();
+        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent()).set("xbPie", xb);
     }
 
     /** 获取家庭信息 */

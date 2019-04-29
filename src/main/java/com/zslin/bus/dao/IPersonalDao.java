@@ -106,4 +106,12 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Modifying
     @Transactional
     void updateZplj(String zplj, String sfzh);
+
+    @Query("UPDATE Personal p SET p.xh=?1 WHERE p.sfzh=?2")
+    @Modifying
+    @Transactional
+    void updateXh(Integer xh, String sfzh);
+
+    @Query("FROM Personal p WHERE p.xh IS NULL OR p.xh=''")
+    List<Personal> findNoXh();
 }

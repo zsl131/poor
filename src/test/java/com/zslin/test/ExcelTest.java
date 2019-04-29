@@ -44,6 +44,54 @@ public class ExcelTest {
     private IDictionaryDao dictionaryDao;
 
     @Test
+    public void test13() {
+        try {
+            Long start = System.currentTimeMillis();
+            String excelFile = "D:/temp/ylydbq0419.xls";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel0419(fis, 4, 0);
+            System.out.println("total::"+list.size());
+            String lxdh = null;
+            Integer amount = 0;
+            for(Personal p : list) {
+                if(p.getXh()!=null && p.getXh()>0) {
+                    amount ++;
+//                    personalDao.updateXh(p.getXh(), p.getSfzh());
+                    JDBCTools.updateXh(p.getXh(), p.getSfzh());
+                }
+            }
+            Long end = System.currentTimeMillis();
+            System.out.println("花时间："+((end-start)/1000) + " 秒。处理："+amount+" 条");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test12() {
+        try {
+            Long start = System.currentTimeMillis();
+            String excelFile = "D:/temp/ylydbq0419.xls";
+            FileInputStream fis = new FileInputStream(excelFile);
+            List<Personal> list = ExcelBasicTools.buildByExcel0419(fis, 4, 0);
+            System.out.println("total::"+list.size());
+            String lxdh = null;
+            Integer amount = 0;
+            for(Personal p : list) {
+                System.out.println("xh======="+p.getXh());
+                if(p.getXh()!=null && p.getXh()>0) {
+                    amount ++;
+                    personalDao.updateXh(p.getXh(), p.getSfzh());
+                }
+            }
+            Long end = System.currentTimeMillis();
+            System.out.println("花时间："+((end-start)/1000) + " 秒。处理："+amount+" 条");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void test11() {
         try {
             Long start = System.currentTimeMillis();
