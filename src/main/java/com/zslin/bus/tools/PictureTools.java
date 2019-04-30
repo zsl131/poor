@@ -2,14 +2,9 @@ package com.zslin.bus.tools;
 
 import com.zslin.basic.tools.ConfigTools;
 import com.zslin.basic.tools.NormalTools;
-import com.zslin.bus.dao.IPersonalDao;
-import com.zslin.bus.dao.IPictureUploadDao;
-import com.zslin.bus.dao.IPictureUploadRecordDao;
-import com.zslin.bus.dao.ITownDao;
-import com.zslin.bus.model.Personal;
-import com.zslin.bus.model.PictureUpload;
-import com.zslin.bus.model.PictureUploadRecord;
-import com.zslin.bus.model.Town;
+import com.zslin.bus.dao.*;
+import com.zslin.bus.dto.PictureDto;
+import com.zslin.bus.model.*;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +38,9 @@ public class PictureTools {
     private IPictureUploadDao pictureUploadDao;
 
     @Autowired
+    private IAssetsDao assetsDao;
+
+    @Autowired
     private IPictureUploadRecordDao pictureUploadRecordDao;
 
     private static final String UPLOAD_PATH_PRE = "/publicFile/upload";
@@ -71,26 +69,50 @@ public class PictureTools {
                 String name = ze.getName();
                 if(!ze.isDirectory() && isPicture(name)) { //如果不是文件夹
                     try {
-                        String xm = getFileNameNoSuffix(name); //
+//                        String xm = getFileNameNoSuffix(name); //
+                        PictureDto pd = buildDto(name);
                         Personal p = null;
                         if(isSfzh) {
-                            p = personalDao.findByXzidAndSfzh(xzid, xm);
+                            p = personalDao.findByCzidAndSfzh(xzid, pd.getName());
                         } else {
-                            p = personalDao.findByXzidAndXm(xzid, xm);
+                            p = personalDao.findByCzidAndXm(xzid, pd.getName());
                         }
                         if(p==null) {
                             addErrorPic(batchNo, name, "未检索到数据");
                             amount ++;
-                        } else if(p.getZplj()!=null && !"".equals(p.getZplj())) {
+                        } /*else if(p.getZplj()!=null && !"".equals(p.getZplj())) {
                             addErrorPic(batchNo, name, "已有照片");
                             amount ++;
-                        } else {
-                            File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + p.getId() + NormalTools.getFileType(getFileName(name)));
-                            String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
-                            FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
-                            Integer w = 800, h = 800;
-                            Thumbnails.of(outFile).size(w, h).toFile(outFile);
-                            personalDao.updateZplj(result, p.getSfzh());
+                        } */else {
+                            if(pd.isHouse()) {
+
+                                File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + p.getId() + NormalTools.getFileType(getFileName(name)));
+                                String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
+                                FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
+                                Integer w = 800, h = 800;
+                                Thumbnails.of(outFile).size(w, h).toFile(outFile);
+
+                                Assets a = new Assets();
+                                a.setHzxm(p.getHzxm());
+                                a.setHzsfzh(p.getHzsfzh());
+                                a.setHzid(p.getHzid());
+                                a.setGsxm(p.getXm());
+                                a.setGsid(p.getId());
+                                a.setGssfzh(p.getSfzh());
+                                a.setMc("房子");
+                                a.setUrl(result);
+                                assetsDao.save(a);
+                            } else if(p.getZplj()!=null && !"".equals(p.getZplj())) {
+                                addErrorPic(batchNo, name, "已有照片");
+                                amount ++;
+                            } else {
+                                File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + p.getId() + NormalTools.getFileType(getFileName(name)));
+                                String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
+                                FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
+                                Integer w = 800, h = 800;
+                                Thumbnails.of(outFile).size(w, h).toFile(outFile);
+                                personalDao.updateZplj(result, p.getSfzh());
+                            }
                         }
                     } catch (Exception e) {
                         addErrorPic(batchNo, name, "重名了");
@@ -131,6 +153,20 @@ public class PictureTools {
         pictureUploadRecordDao.save(record);
     }
 
+    public PictureDto buildDto(String name) {
+        name = getFileNameNoSuffix(name); //
+        name = name.replace("户主", "");
+        boolean isHouse = isHouse(name);
+        return new PictureDto(name, isHouse);
+    }
+
+    private boolean isHouse(String name) {
+        boolean res = false;
+        String [] array = new String[]{"房屋", "住房", "房子"};
+        for(String a : array) {if(name.contains(a)) {res = true; break;}}
+        return res;
+    }
+
     /** 获取村庄名称 */
     public String getCzmc(List<Town> townList, String name) {
         String res = "";
@@ -158,7 +194,7 @@ public class PictureTools {
     public String getFileNameNoSuffix(String name) {
         name = getFileName(name);
         name = name.substring(0, name.indexOf("."));
-        name.replaceAll(" ", "");
+        name.replaceAll(" ", "").replaceAll("，", "").replaceAll("。", "");
         name = rebuildName(name, ":");
         name = rebuildName(name, "：");
         return name;

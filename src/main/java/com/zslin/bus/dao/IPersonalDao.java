@@ -109,10 +109,10 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     void updateLxdh(String lxdh, String sfzh);
 
     /** 通过乡镇ID和姓名获取对象 */
-    Personal findByXzidAndXm(Integer xzid, String xm);
+    Personal findByCzidAndXm(Integer czid, String xm);
 
     /** 通过乡镇ID和身份证号获取对象 */
-    Personal findByXzidAndSfzh(Integer xzid, String sfzh);
+    Personal findByCzidAndSfzh(Integer czid, String sfzh);
 
     @Query("UPDATE Personal p SET p.zplj=?1 WHERE p.sfzh=?2")
     @Modifying
