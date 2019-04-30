@@ -15,13 +15,11 @@ import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dto.PersonalCountDto;
 import com.zslin.bus.dto.PieDto;
-import com.zslin.bus.model.Assets;
-import com.zslin.bus.model.Dictionary;
-import com.zslin.bus.model.Family;
-import com.zslin.bus.model.Personal;
+import com.zslin.bus.model.*;
 import com.zslin.bus.tools.JsonResult;
 import com.zslin.bus.tools.PersonalCountTools;
 import com.zslin.bus.tools.PersonalTools;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -50,12 +48,16 @@ public class PersonalService {
     @Autowired
     private PersonalCountTools personalCountTools;
 
+    @Autowired
+    private TownTools townTools;
+
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
         Page<Personal> res = personalDao.findAll(QueryTools.getInstance().buildSearch(qld.getConditionDtoList()),
                 SimplePageBuilder.generate(qld.getPage(), qld.getSize(), SimpleSortBuilder.generateSort(qld.getSort())));
         List<PieDto> xb = personalDao.findPieByXb();
-        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent()).set("xbPie", xb);
+        Town town = townTools.buildCurrentTown(params, 0);
+        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent()).set("xbPie", xb).set("town", town);
     }
 
     /** 获取家庭信息 */

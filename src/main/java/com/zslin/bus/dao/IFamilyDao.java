@@ -26,4 +26,9 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
     /** 获取所有户数 */
     @Query("SELECT COUNT(f.id) FROM Family f WHERE f.lx=?1 ")
     Integer findAllCount(String lx);
+
+    @Query("UPDATE Family f SET f.ldlrs=?1,f.jyrs=?2 WHERE f.sfzh=?3")
+    @Modifying
+    @Transactional
+    void updateCount(Integer ldlrs, Integer jyrs, String hzsfzh);
 }

@@ -234,6 +234,22 @@ public class Personal {
     /** 村庄名称 */
     private String czmc;
 
+    public String getWgsf() {
+        return wgsf;
+    }
+
+    public void setWgsf(String wgsf) {
+        this.wgsf = wgsf;
+    }
+
+    public String getWgcs() {
+        return wgcs;
+    }
+
+    public void setWgcs(String wgcs) {
+        this.wgcs = wgcs;
+    }
+
     public Integer getCzid() {
         return czid;
     }

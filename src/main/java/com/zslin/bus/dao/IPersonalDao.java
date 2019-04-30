@@ -136,4 +136,12 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     /** 获取已就业人数 */
     @Query("SELECT COUNT(p.id) FROM Personal p WHERE ((p.qymc IS NOT NULL AND p.qymc!='') OR (p.cyxm IS NOT NULL AND p.cyxm!='')) AND  p.lx=?1 ")
     Integer findJyCount(String lx);
+
+    /** 通过户主身份证号获取对象 */
+    @Query("SELECT COUNT(p.id) FROM Personal p WHERE p.sfsldl='劳动力' AND p.hzsfzh=?1")
+    Integer findLdlCountByHz(String hzsfzh);
+
+    /** 通过户主身份证号获取已就业人数 */
+    @Query("SELECT COUNT(p.id) FROM Personal p WHERE ((p.qymc IS NOT NULL AND p.qymc!='') OR (p.cyxm IS NOT NULL AND p.cyxm!='')) AND  p.hzsfzh=?1 ")
+    Integer findJyCountByHz(String hzsfzh);
 }

@@ -1,10 +1,17 @@
 package com.zslin.bus.service;
 
 import com.zslin.basic.annotations.AdminAuth;
+import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.dao.IUserTownDao;
 import com.zslin.bus.dto.PieDto;
+import com.zslin.bus.model.Town;
+import com.zslin.bus.threadlocal.RequestDto;
+import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +30,21 @@ public class CountService {
     @Autowired
     private IPersonalDao personalDao;
 
+    @Autowired
+    private ITownDao townDao;
+
+    @Autowired
+    private IUserTownDao userTownDao;
+
+    @Autowired
+    private TownTools townTools;
+
     public JsonResult index(String params) {
-        JsonResult result = JsonResult.getInstance();
-        /*List<PieDto> xbPie = personalDao.findPieByXb(); //性别饼状图
-        result.set("xbPie", xbPie);*/
-        return result;
+        Integer townId ;
+        try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId")); } catch (Exception e) { townId = 0; }
+        Town t = townTools.buildCurrentTown(params, townId);
+        SystemThreadLocalHolder.initRequestDto(new RequestDto(t==null?1:t.getId(), townId==1, true));
+        return JsonResult.getInstance().set("town", t);
     }
 
     /** 性别饼状图 */

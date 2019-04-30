@@ -1,7 +1,9 @@
 package com.zslin.bus.tools;
 
 import com.zslin.basic.repository.SimpleSortBuilder;
+import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.dao.ITownDao;
+import com.zslin.bus.dao.IUserTownDao;
 import com.zslin.bus.dto.TownDto;
 import com.zslin.bus.model.Town;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class TownTools {
     @Autowired
     private ITownDao townDao;
 
+    @Autowired
+    private IUserTownDao userTownDao;
+
     public List<TownDto> buildTown() {
         List<TownDto> result = new ArrayList<>();
         Sort sort = SimpleSortBuilder.generateSort("orderNo");
@@ -31,5 +36,24 @@ public class TownTools {
             }
         }
         return result;
+    }
+
+    /**
+     * 构建当前访问的乡镇
+     * @param params 请求参数
+     * @param townId 请求的乡镇ID
+     * @return
+     */
+    public Town buildCurrentTown(String params, Integer townId) {
+        Town t = null;
+        //try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId")); } catch (Exception e) { townId = 0; }
+        if(townId==null || townId<=0) {
+            String username = JsonTools.getHeaderParams(params, "username");
+            try { townId = userTownDao.findTownId(username).get(0); } catch (Exception e) { townId = 0; }
+        }
+        if(townId>0) {
+            t = townDao.findOne(townId);
+        }
+        return t;
     }
 }

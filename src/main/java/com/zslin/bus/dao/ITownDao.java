@@ -34,4 +34,8 @@ public interface ITownDao extends BaseRepository<Town, Integer>, JpaSpecificatio
     /** 查询村 */
     @Query("FROM Town t WHERE t.pid IS NOT NULL AND t.name LIKE CONCAT('%',?1,'%')")
     Town findCunByNameLike(String name);
+
+    /** 获取所有村 */
+    @Query("FROM Town t WHERE t.pid IS NOT NULL")
+    List<Town> findAllCun();
 }

@@ -34,6 +34,8 @@ public class ExcelBasicTools {
                     p = buildPersonalJyj0423(row, isStr);
                 } else if("buildPersonalYbj0423".equals(methodName)) {
                     p = buildPersonalYbj0423(row, isStr);
+                } else if("buildPersonal0429".equals(methodName)) {
+                    p = buildPersonal0429(row, isStr);
                 }
                 if(p!=null) {
                     result.add(p);
@@ -107,7 +109,7 @@ public class ExcelBasicTools {
                 case 9:
                     p.setSfhb(val); break;
                 //16-32
-                case 16:
+                /*case 16:
                     p.setCjhzpx(val); break;
                 case 17:
                     p.setWhcd(val); break;
@@ -140,7 +142,7 @@ public class ExcelBasicTools {
                 case 31:
                     p.setPxxq(val); break;
                 case 32:
-                    p.setLxdh(val); break;
+                    p.setLxdh(val); break;*/
             }
             index++;
         }
@@ -194,6 +196,87 @@ public class ExcelBasicTools {
                 case 21:
                     p.setZzje(buildFloat(val)); break;
 
+            }
+            index++;
+        }
+        return p;
+    }
+
+    /** 将一行数据转换成一个对象 */
+    public static Personal buildPersonal0429(Row row, boolean isStr) {
+        Personal p = new Personal();
+        int index = 0;
+        for(Cell cell : row) {
+            String val = getBaseCellValue(cell, isStr);
+            switch (index) {
+                case 0: //序号
+                    p.setXh(buildInteger(val)); break;
+                case 1: //姓名
+                    p.setHzxm(val); break;
+                case 2: //家庭人数
+                    p.setJtrs(buildInteger(val)); break;
+                case 3: //姓名
+                    p.setXm(val); break;
+                case 4: //与户主关系
+                    p.setYhzgx(val); break;
+                case 5: //身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
+                    p.setSfzh(val); break;
+                case 6: //性别
+                    p.setXb(val); break;
+                case 7: //民族
+                    p.setMz(val); break;
+                case 8: //年龄
+                    p.setNl(buildInteger(val)); break;
+                case 9: //是否是劳动力
+                    p.setSfsldl(val); break;
+                case 10: //家庭地址
+                    p.setJtdz(val); break;
+                case 11: //脱贫属性
+                    p.setPksx(val); break;
+                case 12: //参加过何种培训
+                    p.setCjhzpx(val); break;
+                case 13: //文化程度
+                    p.setWhcd(val); break;
+
+                case 14: //务工地点
+                    p.setWgdd(val); break;
+                case 15: //企业名称
+                    p.setQymc(val); break;
+                case 16: //岗位名称
+                    p.setGwmc(val); break;
+                case 17: //务工时间
+                    p.setWgsj(val); break;
+                case 18: //月工资收入
+                    p.setYgz(buildFloat(val)); break;
+                case 19: //创业项目
+                    p.setCyxm(val); break;
+                case 20: //创业地点
+                    p.setCydd(val); break;
+                case 21: //创业时间
+                    p.setCysj(val); break;
+                case 22: //月收入
+                    p.setYsr(buildFloat(val)); break;
+                case 23: //务工去向
+                    p.setWgqx(val); break;
+                case 24: //公益性岗位
+                    p.setGyxgw(val); break;
+                case 25: //自主创业
+                    p.setZzcy(val); break;
+                case 26: //无法外出原因
+                    p.setWfwcyy(val); break;
+                case 27: //培训需求
+                    p.setPxxq(val); break;
+                case 28: //联系电话
+                    p.setLxdh(val); break;
+                case 29: //搬迁地点
+                    p.setBqdd(val); break;
+                case 30: //搬迁时间
+                    p.setBqsj(val); break;
+                case 31: //备注
+                    p.setBz(val); break;
+                case 32: //类型：卡户/随迁户
+                    p.setLx(val); break;
             }
             index++;
         }

@@ -7,7 +7,9 @@ import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.QueryTools;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.model.Family;
+import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,14 @@ public class FamilyService {
     @Autowired
     private IFamilyDao familyDao;
 
+    @Autowired
+    private TownTools townTools;
+
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
         Page<Family> res = familyDao.findAll(QueryTools.getInstance().buildSearch(qld.getConditionDtoList()),
                 SimplePageBuilder.generate(qld.getPage(), qld.getSize(), SimpleSortBuilder.generateSort(qld.getSort())));
-        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent());
+        Town town = townTools.buildCurrentTown(params, 0);
+        return JsonResult.success().set("size", (int)res.getTotalElements()).set("data", res.getContent()).set("town", town);
     }
 }
