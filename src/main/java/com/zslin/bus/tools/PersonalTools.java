@@ -63,8 +63,8 @@ public class PersonalTools {
      * @return
      */
     public static String buildWgsf(String wgdd) {
-        String res = "";
-        if(wgdd==null || "".equals(wgdd.trim())) {return res;}
+        if(wgdd==null || "".equals(wgdd.trim())) {return "";}
+        String res = "其他";
         String [] array = new String[]{"中山", "东莞", "江苏", "上海", "浙江", "福建", "新疆", "云南"};
         for(String sf:array) {
             if(wgdd.contains(sf)) {res = sf; break;}

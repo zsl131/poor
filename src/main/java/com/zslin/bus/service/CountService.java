@@ -56,6 +56,8 @@ public class CountService {
     /** 是否是劳动力饼状图 */
     public JsonResult ldlPie(String params) {
         List<PieDto> data = personalDao.findPieByLdl();
+        Integer xsrs = personalDao.findXsrs("在校");
+        data.add(new PieDto("在校学生", xsrs*1l));
         return JsonResult.getInstance().set("data", data);
     }
 
@@ -98,6 +100,18 @@ public class CountService {
     /** 就业类型饼状图 */
     public JsonResult jylxPie(String params) {
         List<PieDto> data = personalDao.findPieByJylx();
+        return JsonResult.getInstance().set("data", data);
+    }
+
+    /** 务工地域图 */
+    public JsonResult wgdyPie(String params) {
+        List<PieDto> data = personalDao.findPieByWgdy();
+        return JsonResult.getInstance().set("data", data);
+    }
+
+    /** 务工省份 */
+    public JsonResult wgsfPie(String params) {
+        List<PieDto> data = personalDao.findPieByWgsf();
         return JsonResult.getInstance().set("data", data);
     }
 }

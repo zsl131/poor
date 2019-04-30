@@ -67,9 +67,21 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.sfhb, COUNT(p.id)) FROM Personal p GROUP BY p.sfhb")
     List<PieDto> findPieBySfhb();
 
+    /** 务工地域 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgdy, COUNT(p.id)) FROM Personal p WHERE p.wgdy IS NOT NULL AND p.wgdy!='' GROUP BY p.wgdy")
+    List<PieDto> findPieByWgdy();
+
+    /** 务工省份 */
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgsf, COUNT(p.id)) FROM Personal p WHERE p.wgsf IS NOT NULL AND p.wgsf!='' GROUP BY p.wgsf")
+    List<PieDto> findPieByWgsf();
+
     /** 就业类型 */
-    @Query("SELECT new com.zslin.bus.dto.PieDto(p.jylx, COUNT(p.id)) FROM Personal p GROUP BY p.jylx")
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.jylx, COUNT(p.id)) FROM Personal p WHERE p.sfsldl='劳动力' and p.jylx!='未配置' GROUP BY p.jylx")
     List<PieDto> findPieByJylx();
+
+    /** 获取是否学生人数 */
+    @Query("SELECT COUNT(p.id) FROM Personal p WHERE p.sfzx=?1")
+    Integer findXsrs(String sfxz);
 
     /** 就学情况 */
     @Query("UPDATE Personal p SET p.sfzx=?1,p.jyjd=?2,p.jdxx=?3,p.jdnj=?4,p.sfxszz=?5,p.zzje=?6,p.zzxm=?7,p.zzxmmc=?8 WHERE p.sfzh=?9")

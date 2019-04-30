@@ -1,5 +1,6 @@
 package com.zslin.bus.common.controller;
 
+import com.zslin.basic.tools.ConfigTools;
 import com.zslin.bus.dao.IDictionaryDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
@@ -38,6 +39,9 @@ public class TestController {
     @Autowired
     private IFamilyDao familyDao;
 
+    @Autowired
+    private ConfigTools configTools;
+
     @RequestMapping(value = "index")
     public String index(HttpServletRequest request, String p) {
         return "连接正常，参数："+p;
@@ -50,7 +54,8 @@ public class TestController {
             @Override
             public void run() {
                 try {
-                    File excelFile = ResourceUtils.getFile("classpath:data/ybj-just.xls");
+//                    File excelFile = ResourceUtils.getFile("classpath:data/ybj-just.xls");
+                    File excelFile = new File(configTools.getUploadPath("/publicFile") + File.separator + "ybj-just.xls");
                     FileInputStream fis = new FileInputStream(excelFile);
                     List<Personal> list = ExcelBasicTools.buildByExcel(fis, 4, 0, "buildPersonalYbj0423", true);
                     System.out.println("===personal count :"+ list.size());
@@ -84,7 +89,8 @@ public class TestController {
                 try {
                     Integer start = sheet==null?0:sheet;
 //                    String excelFile = "D:/temp/jyj-just.xls";
-                    File excelFile = ResourceUtils.getFile("classpath:data/jyj-just.xls");
+//                    File excelFile = ResourceUtils.getFile("classpath:data/jyj-just.xls");
+                    File excelFile = new File(configTools.getUploadPath("/publicFile") + File.separator + "jyj-just.xls");
                     FileInputStream fis = new FileInputStream(excelFile);
                     List<Personal> list = ExcelBasicTools.buildByExcel(fis, 4, start, "buildPersonalJyj0423", true);
                     System.out.println("===personal count :"+ list.size());

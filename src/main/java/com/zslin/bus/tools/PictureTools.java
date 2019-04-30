@@ -9,6 +9,7 @@ import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.PictureUpload;
 import com.zslin.bus.model.PictureUploadRecord;
+import com.zslin.bus.model.Town;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -83,7 +85,7 @@ public class PictureTools {
                             addErrorPic(batchNo, name, "已有照片");
                             amount ++;
                         } else {
-                            File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + UUID.randomUUID().toString() + NormalTools.getFileType(getFileName(name)));
+                            File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + p.getId() + NormalTools.getFileType(getFileName(name)));
                             String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
                             FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
                             Integer w = 800, h = 800;
@@ -127,6 +129,20 @@ public class PictureTools {
         record.setReason(reason);
         record.setContent(name);
         pictureUploadRecordDao.save(record);
+    }
+
+    /** 获取村庄名称 */
+    public String getCzmc(List<Town> townList, String name) {
+        String res = "";
+        String [] array = name.split("/"); //将文件名分组
+        for(int i=array.length-1; i>=0;i--) { //倒过来取
+            String tempStr = array[i];
+            tempStr = tempStr.length()>=2?tempStr.substring(0,2):tempStr;
+            for(Town t : townList) {
+                if(t.getName().contains(tempStr)) {res = t.getName(); break;}
+            }
+        }
+        return res;
     }
 
     public boolean isPicture(String name) {
