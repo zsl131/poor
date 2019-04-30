@@ -85,8 +85,7 @@ public class PictureTools {
                             amount ++;
                         } */else {
                             if(pd.isHouse()) {
-
-                                File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + p.getId() + NormalTools.getFileType(getFileName(name)));
+                                File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + UUID.randomUUID() + NormalTools.getFileType(getFileName(name)));
                                 String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
                                 FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
                                 Integer w = 800, h = 800;
@@ -153,31 +152,19 @@ public class PictureTools {
         pictureUploadRecordDao.save(record);
     }
 
+    String [] HOUSE_ARRAY = new String[]{"家房屋", "房屋", "住房", "房子"};
+
     public PictureDto buildDto(String name) {
+        boolean isHouse = isHouse(name);
         name = getFileNameNoSuffix(name); //
         name = name.replace("户主", "");
-        boolean isHouse = isHouse(name);
+        for(String a : HOUSE_ARRAY) {name = name.replace(a, "");}
         return new PictureDto(name, isHouse);
     }
 
     private boolean isHouse(String name) {
         boolean res = false;
-        String [] array = new String[]{"房屋", "住房", "房子"};
-        for(String a : array) {if(name.contains(a)) {res = true; break;}}
-        return res;
-    }
-
-    /** 获取村庄名称 */
-    public String getCzmc(List<Town> townList, String name) {
-        String res = "";
-        String [] array = name.split("/"); //将文件名分组
-        for(int i=array.length-1; i>=0;i--) { //倒过来取
-            String tempStr = array[i];
-            tempStr = tempStr.length()>=2?tempStr.substring(0,2):tempStr;
-            for(Town t : townList) {
-                if(t.getName().contains(tempStr)) {res = t.getName(); break;}
-            }
-        }
+        for(String a : HOUSE_ARRAY) {if(name.contains(a)) {res = true; break;}}
         return res;
     }
 
