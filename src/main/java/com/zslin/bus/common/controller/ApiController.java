@@ -69,8 +69,6 @@ public class ApiController {
     @RequestMapping(value = "baseRequest")
     public JsonResult baseRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        SystemThreadLocalHolder.initRequestDto(new RequestDto(123, 111));
-
         String token = request.getHeader("auth-token"); //身份认证token
         String apiCode = request.getHeader("api-code"); //接口访问编码
         if(token == null || "".equals(token) || apiCode==null || "".equals(apiCode)) {
@@ -117,8 +115,8 @@ public class ApiController {
             String username = JsonTools.getHeaderParams(params, "username");
             User user = userDao.findByUsername(username);
             List<Integer> townIds = userTownDao.findTownId(user.getId());
-            Integer isAll = townIds.contains(1)?1:0; //如果包含1，表示是全县
-            SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), isAll));
+//            Integer isAll = townIds.contains(1)?1:0; //如果包含1，表示是全县
+            SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), townIds.contains(1)));
         } catch (Exception e) {
             SystemThreadLocalHolder.remove();
         }

@@ -62,7 +62,7 @@ public class Personal {
     /** 文化程度 */
     private String whcd;
 
-    /** 是否是劳动力 */
+    /** 是否是劳动力,劳动力；无劳动力 */
     private String sfsldl;
 
     /** 就学情况 */

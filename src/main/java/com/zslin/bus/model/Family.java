@@ -27,7 +27,13 @@ public class Family {
     private String sfzh;
 
     /** 家庭人数 */
-    private Integer jtrs;
+    private Integer jtrs = 0;
+
+    /** 劳动力人数 */
+    private Integer ldlrs = 0;
+
+    /** 就业人数 */
+    private Integer jyrs = 0;
 
     /** 家庭地址 */
     private String jtdz;
@@ -85,6 +91,22 @@ public class Family {
 
     /** 村庄名称 */
     private String czmc;
+
+    public Integer getLdlrs() {
+        return ldlrs;
+    }
+
+    public void setLdlrs(Integer ldlrs) {
+        this.ldlrs = ldlrs;
+    }
+
+    public Integer getJyrs() {
+        return jyrs;
+    }
+
+    public void setJyrs(Integer jyrs) {
+        this.jyrs = jyrs;
+    }
 
     public Integer getCzid() {
         return czid;

@@ -59,16 +59,19 @@ public class TownService {
 
     public JsonResult listByLogin(String params) {
         String username = JsonTools.getHeaderParams(params, "username"); //
-        String level = JsonTools.getJsonParam(params, "level");
+//        String level = JsonTools.getJsonParam(params, "level");
         Sort sort = SimpleSortBuilder.generateSort("orderNo");
-        List<Town> townList ;
-        if("10".equals(level)) { //如果是县级
-            townList = townDao.findAll();
-        } else {
-            townList = townDao.findByUsername(username, sort);
+        List<Town> townList = townDao.findByUsername(username, sort);
+        Town town = townList.get(0);
+//        System.out.println("=="+town.getName()+"==="+town.getId()+"==="+(town.getId()!=1));
+        List<Town> children = new ArrayList<>();
+        if(town!=null && town.getId()!=1) {
+            children = townDao.findByPid(town.getId(), sort);
+        } else if(town!=null && town.getId()==1) {
+            children = townDao.findParent(sort);
         }
 //        System.out.println("username::"+username);
-        return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList));
+        return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList)).set("town", town).set("children", children);
     }
 
     public List<String> buildPic(List<Town> townList) {

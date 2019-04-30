@@ -13,12 +13,14 @@ import com.zslin.bus.dao.IAssetsDao;
 import com.zslin.bus.dao.IDictionaryDao;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.dto.PersonalCountDto;
 import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Assets;
 import com.zslin.bus.model.Dictionary;
 import com.zslin.bus.model.Family;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.PersonalCountTools;
 import com.zslin.bus.tools.PersonalTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +46,9 @@ public class PersonalService {
 
     @Autowired
     private IDictionaryDao dictionaryDao;
+
+    @Autowired
+    private PersonalCountTools personalCountTools;
 
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
@@ -75,6 +80,13 @@ public class PersonalService {
         result.set("family", f).set("personal", p).set("assetsList", assetsList);
 
         return result;
+    }
+
+    /** 获取最新统计DTO对象，参数：townId */
+    public JsonResult queryCountDto(String params) {
+        Integer townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId"));
+        List<PersonalCountDto> dto = personalCountTools.buildCountDto(townId);
+        return JsonResult.success("获取成功").set("countDto", dto);
     }
 
     public JsonResult loadOne(String params) {

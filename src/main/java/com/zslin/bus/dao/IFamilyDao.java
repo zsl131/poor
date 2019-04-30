@@ -19,4 +19,11 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
     @Transactional
     void updateIndustry(Float zjd, Float ld, Float gd, String zzpz, Float zzdmj, String sfzh);
 
+    /** 获取所有户数 */
+    @Query("SELECT COUNT(f.id) FROM Family f ")
+    Integer findAllCount();
+
+    /** 获取所有户数 */
+    @Query("SELECT COUNT(f.id) FROM Family f WHERE f.lx=?1 ")
+    Integer findAllCount(String lx);
 }

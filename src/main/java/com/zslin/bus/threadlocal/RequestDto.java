@@ -5,39 +5,57 @@ package com.zslin.bus.threadlocal;
  */
 public class RequestDto {
 
-    private Integer uid;
+    private Integer objId;
 
-    private Integer isAll;
+    private boolean isAll;
+
+    private boolean isTownId = false;
 
     public RequestDto() {
     }
 
-    public RequestDto(Integer uid, Integer isAll) {
-        this.uid = uid;
+    public RequestDto(Integer objId, boolean isAll) {
+        this.objId = objId;
         this.isAll = isAll;
+        this.isTownId = false;
+    }
+
+    public RequestDto(Integer objId, boolean isAll, boolean isTownId) {
+        this.objId = objId;
+        this.isAll = isAll;
+        this.isTownId = isTownId;
     }
 
     @Override
     public String toString() {
         return "RequestDto{" +
-                "uid=" + uid +
+                "objId=" + objId +
                 ", isAll=" + isAll +
+                ", isTownId=" + isTownId +
                 '}';
     }
 
-    public Integer getUid() {
-        return uid;
+    public boolean isTownId() {
+        return isTownId;
     }
 
-    public void setUid(Integer uid) {
-        this.uid = uid;
+    public void setTownId(boolean townId) {
+        isTownId = townId;
     }
 
-    public Integer getIsAll() {
+    public Integer getObjId() {
+        return objId;
+    }
+
+    public void setObjId(Integer objId) {
+        this.objId = objId;
+    }
+
+    public boolean getIsAll() {
         return isAll;
     }
 
-    public void setIsAll(Integer isAll) {
+    public void setIsAll(boolean isAll) {
         this.isAll = isAll;
     }
 }

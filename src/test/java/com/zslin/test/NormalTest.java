@@ -4,10 +4,12 @@ import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dao.IUserTownDao;
+import com.zslin.bus.dto.PersonalCountDto;
 import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.tools.ExcelBasicTools;
+import com.zslin.bus.tools.PersonalCountTools;
 import com.zslin.bus.tools.PersonalTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +40,17 @@ public class NormalTest {
 
     @Autowired
     private IUserTownDao userTownDao;
+
+    @Autowired
+    private PersonalCountTools personalCountTools;
+
+    @Test
+    public void test09() {
+        List<PersonalCountDto> list = personalCountTools.buildCountDto(3);
+        for(PersonalCountDto dto : list) {
+            System.out.println(dto);
+        }
+    }
 
     @Test
     public void test08() {
