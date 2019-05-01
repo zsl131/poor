@@ -195,8 +195,13 @@ public class TestController {
                     }
                 }).start();
             }
-        } else {
-            for(File file : f.listFiles()) {processPic(file);}
+        } else if(f.isDirectory()) {
+            File [] files = f.listFiles();
+            if(files!=null) {
+                for (File file : files) {
+                    processPic(file);
+                }
+            }
         }
     }
 
