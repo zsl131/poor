@@ -166,7 +166,7 @@ public class TestController {
 
             }
         }).start();*/
-
+        System.out.println("========file path ::: "+dir.getAbsolutePath());
         processPic(dir);
 
         return "正在处理照片。。。";
@@ -182,6 +182,7 @@ public class TestController {
     private IPictureUploadDao pictureUploadDao;
 
     private void processPic(File f) {
+        System.out.println("=========fileName::"+f.getName());
         if(f.isFile()) {
             String name = f.getName().toLowerCase().replace(".zip", "");
             Town t = townDao.findByNameLike(name.length()>2?name.substring(0, 2):name);
