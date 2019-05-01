@@ -36,6 +36,18 @@ public class PictureUpload {
     /** 获取方式，姓名或身份证号 */
     private String hqfs;
 
+    /** 成功条数 */
+    @Column(name = "suc_amount")
+    private Integer sucAmount;
+
+    public Integer getSucAmount() {
+        return sucAmount;
+    }
+
+    public void setSucAmount(Integer sucAmount) {
+        this.sucAmount = sucAmount;
+    }
+
     @Column(name = "create_date")
     private String createDate;
 

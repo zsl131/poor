@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ITownDao extends BaseRepository<Town, Integer>, JpaSpecificationExecutor<Town> {
 
-    @Query("FROM Town t WHERE t.pid IS NULL")
+    @Query("FROM Town t WHERE t.pid IS NULL OR t.pid=0 ")
     List<Town> findParent(Sort sort);
 
     List<Town> findByPid(Integer pid, Sort sort);

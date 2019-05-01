@@ -2,6 +2,7 @@ package com.zslin.bus.tools;
 
 import com.zslin.basic.tools.ConfigTools;
 import com.zslin.basic.tools.NormalTools;
+import com.zslin.bus.common.tools.RandomTools;
 import com.zslin.bus.dao.*;
 import com.zslin.bus.dto.PictureDto;
 import com.zslin.bus.model.*;
@@ -46,7 +47,7 @@ public class PictureTools {
     private static final String UPLOAD_PATH_PRE = "/publicFile/upload";
 
     private String buildBatchNo() {
-        return NormalTools.curDate("yyyyMMddHHmmss");
+        return NormalTools.curDate("yyyyMMddHHmmss")+"_"+ RandomTools.randomString(6);
     }
 
     /**
@@ -58,6 +59,7 @@ public class PictureTools {
     public void readFile(String hqfs, Integer xzid, File zipFile) {
         String batchNo = buildBatchNo(); //批次号
         Integer amount = 0;
+        Integer sucAmount = 0;
         ZipInputStream zis = null;
         String xzmc = townDao.findOne(xzid).getName();
         boolean isSfzh = ("1".equals(hqfs) || "sfzh".equals(hqfs)); //hqfs为1或sfzh时表示是以身份证号命名
@@ -101,6 +103,7 @@ public class PictureTools {
                                 a.setMc("房子");
                                 a.setUrl(result);
                                 assetsDao.save(a);
+                                sucAmount++;
                             } else if(p.getZplj()!=null && !"".equals(p.getZplj())) {
                                 addErrorPic(batchNo, name, "已有照片");
                                 amount ++;
@@ -111,6 +114,7 @@ public class PictureTools {
                                 Integer w = 800, h = 800;
                                 Thumbnails.of(outFile).size(w, h).toFile(outFile);
                                 personalDao.updateZplj(result, p.getSfzh());
+                                sucAmount++;
                             }
                         }
                     } catch (Exception e) {
@@ -120,18 +124,17 @@ public class PictureTools {
                 }
 
             }
-            if(amount>0) {
-                PictureUpload pu = new PictureUpload();
-                pu.setBatchNo(batchNo);
-                pu.setAmount(amount);
-                pu.setCreateDate(NormalTools.curDate());
-                pu.setCreateLong(System.currentTimeMillis());
-                pu.setCreateTime(NormalTools.curDatetime());
-                pu.setXzid(xzid);
-                pu.setXzmc(xzmc);
-                pu.setHqfs(isSfzh?"身份证":"姓名");
-                pictureUploadDao.save(pu);
-            }
+            PictureUpload pu = new PictureUpload();
+            pu.setBatchNo(batchNo);
+            pu.setAmount(amount);
+            pu.setCreateDate(NormalTools.curDate());
+            pu.setCreateLong(System.currentTimeMillis());
+            pu.setCreateTime(NormalTools.curDatetime());
+            pu.setXzid(xzid);
+            pu.setXzmc(xzmc);
+            pu.setHqfs(isSfzh?"身份证":"姓名");
+            pu.setSucAmount(sucAmount);
+            pictureUploadDao.save(pu);
             zf.close();
             zis.close();
         } catch (Exception e) {

@@ -1,14 +1,12 @@
 package com.zslin.bus.common.controller;
 
 import com.zslin.basic.tools.ConfigTools;
-import com.zslin.bus.dao.IDictionaryDao;
-import com.zslin.bus.dao.IFamilyDao;
-import com.zslin.bus.dao.IPersonalDao;
-import com.zslin.bus.model.Dictionary;
-import com.zslin.bus.model.Family;
-import com.zslin.bus.model.Personal;
+import com.zslin.basic.tools.NormalTools;
+import com.zslin.bus.dao.*;
+import com.zslin.bus.model.*;
 import com.zslin.bus.tools.ExcelBasicTools;
 import com.zslin.bus.tools.PersonalXhTools;
+import com.zslin.bus.tools.PictureTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,5 +154,58 @@ public class TestController {
         Long end = System.currentTimeMillis();
         Long use = (end - start) /1000;
         return "处理完成，用时 ： "+use + " 秒。";
+    }
+
+    @RequestMapping(value = "processPicture")
+    public String processPicture() {
+        File dir = new File(configTools.getUploadPath("/publicFile/temp_zip"));
+        if(!dir.exists()) {dir.mkdirs();}
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();*/
+
+        processPic(dir);
+
+        return "正在处理照片。。。";
+    }
+
+    @Autowired
+    private PictureTools pictureTools;
+
+    @Autowired
+    private ITownDao townDao;
+
+    @Autowired
+    private IPictureUploadDao pictureUploadDao;
+
+    private void processPic(File f) {
+        if(f.isFile()) {
+            String name = f.getName().toLowerCase().replace(".zip", "");
+            Town t = townDao.findByNameLike(name.length()>2?name.substring(0, 2):name);
+            if(t==null) {
+                addPictureUpload(name);
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pictureTools.readFile("xm", t.getId(), f);
+                    }
+                }).start();
+            }
+        } else {
+            for(File file : f.listFiles()) {processPic(file);}
+        }
+    }
+
+    private void addPictureUpload(String name) {
+        PictureUpload pu = new PictureUpload();
+        pu.setCreateTime(NormalTools.curDatetime());
+        pu.setCreateLong(System.currentTimeMillis());
+        pu.setCreateDate(NormalTools.curDate());
+        pu.setXzmc(name+"-未找到");
+        pictureUploadDao.save(pu);
     }
 }
