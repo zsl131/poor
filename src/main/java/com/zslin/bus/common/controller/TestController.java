@@ -185,7 +185,7 @@ public class TestController {
         System.out.println("=========fileName::"+f.getName());
         if(f.isFile()) {
             String name = f.getName().toLowerCase().replace(".zip", "");
-            Town t = townDao.findByNameLike(name.length()>2?name.substring(0, 2):name);
+            Town t = townDao.findCunByNameLike(name.length()>2?name.substring(0, 2):name);
             if(t==null) {
                 addPictureUpload(name);
             } else {
