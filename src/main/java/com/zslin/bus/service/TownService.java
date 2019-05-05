@@ -61,6 +61,10 @@ public class TownService {
         String username = JsonTools.getHeaderParams(params, "username"); //
 //        String level = JsonTools.getJsonParam(params, "level");
         Sort sort = SimpleSortBuilder.generateSort("orderNo");
+        Integer townId = 0;
+        try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId"));} catch (Exception e) { townId = 0; }
+        Town curTown = null;
+        curTown = townId>1?townDao.findOne(townId):null;
         List<Town> townList = townDao.findByUsername(username, sort);
         Town town = townList.get(0);
 //        System.out.println("=="+town.getName()+"==="+town.getId()+"==="+(town.getId()!=1));
@@ -70,6 +74,12 @@ public class TownService {
         } else if(town!=null && town.getId()==1) {
             children = townDao.findParent(sort);
         }
+
+        if(townId>1 && townList.contains(curTown) || children.contains(curTown)) { //如果是1则为彝良县本身，所以这里不能包含在内
+            town = curTown;
+            children = townDao.findByPid(townId, sort);
+        }
+
 //        System.out.println("username::"+username);
         return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList)).set("town", town).set("children", children);
     }
