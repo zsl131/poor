@@ -185,7 +185,7 @@ public class TestController {
         System.out.println("=========fileName::"+f.getName());
         if(f.isFile()) {
             String name = f.getName().toLowerCase().replace(".zip", "");
-            Town t ;
+            Town t = null ;
             try {
                 t = townDao.findCunByNameLike(name.length()>2?name.substring(0, 2):name);
             } catch (Exception e) {
@@ -194,10 +194,11 @@ public class TestController {
             if(t==null) {
                 addPictureUpload(name);
             } else {
+                Integer townId = t.getId();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        pictureTools.readFile("xm", t.getId(), f);
+                        pictureTools.readFile("xm", townId, f);
                     }
                 }).start();
             }
