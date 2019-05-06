@@ -209,6 +209,7 @@ public class TestController {
                     processPic(file);
                 }
             }
+            if(files==null || files.length<=0) {f.delete();}
         }
     }
 
