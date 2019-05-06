@@ -15,10 +15,12 @@ import com.zslin.bus.common.model.ApiTokenCode;
 import com.zslin.bus.common.model.Record;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.dao.IUserTownDao;
+import com.zslin.bus.model.Town;
 import com.zslin.bus.threadlocal.RequestDto;
 import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
 import com.zslin.bus.tools.JsonParamTools;
 import com.zslin.bus.tools.JsonResult;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,13 +112,23 @@ public class ApiController {
         }
     }
 
+    @Autowired
+    private TownTools townTools;
+
     private void buildThreadLocal(String params) {
         try {
-            String username = JsonTools.getHeaderParams(params, "username");
+            Integer townId ;
+            try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId")); } catch (Exception e) { townId = 0; }
+            Town t = townTools.buildCurrentTown(params, townId);
+            RequestDto dto = new RequestDto(t==null?1:t.getId(), t==null||t.getId()==1, townId>0);
+//            System.out.println("======="+dto);
+            SystemThreadLocalHolder.initRequestDto(dto);
+
+            /*String username = JsonTools.getHeaderParams(params, "username");
             User user = userDao.findByUsername(username);
             List<Integer> townIds = userTownDao.findTownId(user.getId());
 //            Integer isAll = townIds.contains(1)?1:0; //如果包含1，表示是全县
-            SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), townIds.contains(1)));
+            SystemThreadLocalHolder.initRequestDto(new RequestDto(user.getId(), townIds.contains(1)));*/
         } catch (Exception e) {
             SystemThreadLocalHolder.remove();
         }

@@ -209,7 +209,7 @@ public class TestController {
                     processPic(file);
                 }
             }
-            if(files==null || files.length<=0) {f.delete();}
+            if((files==null || files.length<=0) && !f.getName().contains("temp_zip")) {f.delete();}
         }
     }
 

@@ -234,6 +234,17 @@ public class Personal {
     /** 村庄名称 */
     private String czmc;
 
+    /** 残疾证号 */
+    private String cjzh;
+
+    public String getCjzh() {
+        return cjzh;
+    }
+
+    public void setCjzh(String cjzh) {
+        this.cjzh = cjzh;
+    }
+
     public String getWgsf() {
         return wgsf;
     }

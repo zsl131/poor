@@ -105,7 +105,9 @@ public class PersonalService {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
             Personal obj = personalDao.findOne(p.getId());
             obj.setXm(p.getXm());
-            obj.setSfzh(p.getSfzh());
+            String sfzh = p.getSfzh();
+            obj.setSfzh(sfzh.length()>18?sfzh.substring(0,18):sfzh);
+            obj.setCjzh(sfzh.length()>18?sfzh.substring(18, 20):"");
             obj.setXb(p.getXb());
             obj.setMz(p.getMz());
             obj.setWhcd(p.getWhcd());
@@ -131,6 +133,8 @@ public class PersonalService {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
             Personal obj = personalDao.findOne(p.getId());
             String jylx = p.getJylx(); //1-外出务工；2-自主创业；3-未就业
+            boolean canSave = false;
+            String errorReason = "";
             if("1".equals(jylx)) { //外出务工
                 obj.setWgdd(p.getWgdd());
                 obj.setQymc(p.getQymc());
@@ -138,23 +142,39 @@ public class PersonalService {
                 obj.setWgsj(p.getWgsj());
                 obj.setYgz(p.getYgz());
                 obj.setJylx(PersonalTools.buildJyLx(obj));
-                personalDao.save(obj);
+                if(p.getWgdd()==null || "".equals(p.getWgdd().trim())) {
+                    canSave = false; errorReason = "请认真填写各项信息";
+                } else {canSave = true;}
+//                personalDao.save(obj);
             } else if("2".equals(jylx)) { //自主创业
                 obj.setCyxm(p.getCyxm());
                 obj.setCydd(p.getCydd());
                 obj.setCysj(p.getCysj());
                 obj.setYsr(p.getYsr());
                 obj.setJylx(PersonalTools.buildJyLx(obj));
-                personalDao.save(obj);
+                if(p.getCyxm()==null || "".equals(p.getCyxm().trim())) {
+                    canSave = false; errorReason = "请认真填写各项信息";
+                } else {canSave = true;}
+//                personalDao.save(obj);
             } else if("3".equals(jylx)) { //未就业
                 obj.setWgqx(p.getWgqx());
                 obj.setGyxgw(p.getGyxgw());
                 obj.setZzcy(p.getZzcy());
                 obj.setWfwcyy(p.getWfwcyy());
                 obj.setJylx(PersonalTools.buildJyLx(obj));
-                personalDao.save(obj);
+                if(p.getWfwcyy()==null || "".equals(p.getWfwcyy().trim())) {
+                    canSave = false; errorReason = "请认真填写各项信息";
+                } else {canSave = true;}
+//                personalDao.save(obj);
             }
-            return JsonResult.success("修改就业情况成功");
+            JsonResult res = JsonResult.getInstance();
+            if(canSave) {
+                personalDao.save(obj); res.set("flag", "1");
+            } else {
+                res.set("flag", "0").set("errorMsg", errorReason);
+            }
+            res.set("message", "修改就业情况成功");
+            return res;
         } catch (Exception e) {
 //            e.printStackTrace();
             return JsonResult.error("修改出错："+e.getMessage());
