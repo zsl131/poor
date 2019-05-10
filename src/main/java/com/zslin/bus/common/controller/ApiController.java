@@ -120,7 +120,13 @@ public class ApiController {
             Integer townId ;
             try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId")); } catch (Exception e) { townId = 0; }
             Town t = townTools.buildCurrentTown(params, townId);
-            RequestDto dto = new RequestDto(t==null?1:t.getId(), t==null||t.getId()==1, townId>0);
+//            System.out.println("--->"+t);
+            User u = null;
+            if(townId<=0) {
+                String username = JsonTools.getHeaderParams(params, "username");
+                u = userDao.findByUsername(username);
+            }
+            RequestDto dto = new RequestDto(townId>0?(t==null?1:t.getId()):(u==null?1:u.getId()), t==null||t.getId()==1, townId>0);
 //            System.out.println("======="+dto);
             SystemThreadLocalHolder.initRequestDto(dto);
 

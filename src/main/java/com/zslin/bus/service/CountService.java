@@ -7,6 +7,7 @@ import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
 import com.zslin.bus.dao.IUserTownDao;
 import com.zslin.bus.dto.PieDto;
+import com.zslin.bus.model.Personal;
 import com.zslin.bus.model.Town;
 import com.zslin.bus.threadlocal.RequestDto;
 import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
@@ -113,5 +114,17 @@ public class CountService {
     public JsonResult wgsfPie(String params) {
         List<PieDto> data = personalDao.findPieByWgsf();
         return JsonResult.getInstance().set("data", data);
+    }
+
+    /** 点击图表获取数据 */
+    public JsonResult queryData(String params) {
+        String field = JsonTools.getJsonParam(params, "field");
+        String value = JsonTools.getJsonParam(params, "value");
+        String join = JsonTools.getJsonParam(params, "join");
+        join = (join==null || "".equals(join.trim()))?"=":join;
+        String hql = "FROM Personal p WHERE p."+field+" "+join+" '"+value+"'";
+//        System.out.println("==========>"+hql);
+        List<Personal> list = personalDao.listByHql(hql);
+        return JsonResult.success("获取成功").set("personalList", list);
     }
 }

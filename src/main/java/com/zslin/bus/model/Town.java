@@ -33,6 +33,20 @@ public class Town {
     @Column(name = "order_no")
     private Integer orderNo;
 
+    @Override
+    public String toString() {
+        return "Town{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", level='" + level + '\'' +
+                ", remark='" + remark + '\'' +
+                ", pid=" + pid +
+                ", pname='" + pname + '\'' +
+                ", orderNo=" + orderNo +
+                ", picUrl='" + picUrl + '\'' +
+                '}';
+    }
+
     public Integer getOrderNo() {
         return orderNo;
     }
