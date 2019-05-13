@@ -1,7 +1,7 @@
 package com.zslin.basic.dao;
 
 import com.zslin.basic.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.zslin.basic.repository.BaseRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by 钟述林 393156105@qq.com on 2016/10/19 10:00.
  */
-public interface IUserDao extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
+public interface IUserDao extends BaseRepository<User, Integer>, JpaSpecificationExecutor<User> {
 
     User findByUsername(String username);
 

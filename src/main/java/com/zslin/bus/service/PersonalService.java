@@ -187,10 +187,20 @@ public class PersonalService {
         try {
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
             Personal obj = personalDao.findOne(p.getId());
-            obj.setBqsj(p.getBqsj());
+
+            /*obj.setBqsj(p.getBqsj());
             obj.setBqdd(p.getBqdd());
             obj.setBz(p.getBz());
-            personalDao.save(obj);
+            personalDao.save(obj);*/
+
+            String hzsfzh = obj.getHzsfzh();
+            String bqdd = p.getBqdd();
+            String bqsj = p.getBqsj();
+            String bz = p.getBz();
+
+            personalDao.updateBqxx(bqdd, bqsj, bz, hzsfzh);
+            familyDao.updateBqxx(bqdd, bqsj, bz, hzsfzh);
+
             return JsonResult.success("修改搬迁信息成功");
         } catch (Exception e) {
 //            e.printStackTrace();

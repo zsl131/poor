@@ -1,11 +1,14 @@
 package com.zslin.bus.dao;
 
 import com.zslin.basic.repository.BaseRepository;
+import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.Family;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by zsl on 2019/4/15.
@@ -31,4 +34,19 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
     @Modifying
     @Transactional
     void updateCount(Integer ldlrs, Integer jyrs, String hzsfzh);
+
+    @Query("UPDATE Family f SET f.bqdd=?1,f.bqsj=?2,f.bz=?3 WHERE f.sfzh=?4")
+    @Modifying
+    @Transactional
+    void updateBqxx(String bqdd, String bqsj, String bz, String hzsfzh);
+
+    @Query("SELECT new com.zslin.bus.dto.PieDto(f.bqdd, COUNT(f.id)) FROM Family f GROUP BY f.bqdd")
+    List<PieDto> findPieByBqdd();
+
+    @Query("SELECT new com.zslin.bus.dto.PieDto(f.bqsj, COUNT(f.id)) FROM Family f WHERE f.bqdd=?1 GROUP BY f.bqsj")
+    List<PieDto> findPieByBqsj(String bqdd);
+
+    List<Family> findByBqdd(String bqdd);
+
+    List<Family> findByBqddAndBqsj(String bqdd, String bqsj);
 }

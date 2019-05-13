@@ -40,6 +40,11 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Transactional
     void updateJylx(String jylx, String sfzh);
 
+    @Query("UPDATE Personal p SET p.bqdd=?1,p.bqsj=?2,p.bz=?3 WHERE p.hzsfzh=?4")
+    @Modifying
+    @Transactional
+    void updateBqxx(String bqdd, String bqsj, String bz, String hzsfzh);
+
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.xb, COUNT(p.id)) FROM Personal p GROUP BY p.xb")
     List<PieDto> findPieByXb();
 
@@ -135,7 +140,8 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     Integer findLdlCount();
 
     /** 获取已就业人数 */
-    @Query("SELECT COUNT(p.id) FROM Personal p WHERE ((p.qymc IS NOT NULL AND p.qymc!='') OR (p.cyxm IS NOT NULL AND p.cyxm!='')) ")
+//    @Query("SELECT COUNT(p.id) FROM Personal p WHERE ((p.qymc IS NOT NULL AND p.qymc!='') OR (p.cyxm IS NOT NULL AND p.cyxm!='')) ")
+    @Query("SELECT COUNT(p.id) FROM Personal p WHERE (p.jylx!='' AND p.jylx!='未配置' AND p.jylx!='未就业') ")
     Integer findJyCount();
 
     @Query("SELECT COUNT(p.id) FROM Personal p WHERE p.lx=?1 ")

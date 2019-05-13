@@ -64,6 +64,7 @@ public class TownService {
         Integer townId = 0;
         try { townId = Integer.parseInt(JsonTools.getJsonParam(params, "townId"));} catch (Exception e) { townId = 0; }
         Town curTown = null;
+//        Town town1 = townDao.findById(townId).get();
         curTown = townId>1?townDao.findOne(townId):null;
         List<Town> townList = townDao.findByUsername(username, sort);
         Town town = townList.get(0);

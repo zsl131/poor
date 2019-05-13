@@ -1,9 +1,11 @@
 package com.zslin.basic.repository;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
@@ -37,6 +39,34 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
             query.setParameter(i++, arg);
         }
         return query.getResultList();
+    }
+
+    /*@Override
+    public Page<T> listByHql(String hql, Pageable pageable, Object... args) {
+        Query query = em.createQuery(hql);
+        int i=1;
+        for(Object arg : args) {
+            query.setParameter(i++, arg);
+        }
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+        *//**
+         * 生成获取总数的sql
+         *//*
+        TypedQuery<Long> cQuery = (TypedQuery<Long>) em.createQuery(QueryUtils.createCountQueryFor(hql));
+
+        return PageableExecutionUtils.getPage(query.getResultList(), pageable, executeCountQuery(cQuery));
+        return null;
+    }*/
+
+    private Long executeCountQuery(TypedQuery<Long> query) {
+        Assert.notNull(query, "TypedQuery must not be null!");
+        List<Long> totals = query.getResultList();
+        Long total = 0L;
+        for (Long element : totals) {
+            total += element == null ? 0 : element;
+        }
+        return total;
     }
 
     @Override
