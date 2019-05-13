@@ -82,10 +82,22 @@ public class TownService {
         }
 
 //        System.out.println("username::"+username);
-        return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(townList)).set("town", town).set("children", children);
+        return JsonResult.success("获取成功").set("townList", townList).set("picList", buildPic(curTown==null?town:curTown)).set("town", town).set("children", children);
     }
 
-    public List<String> buildPic(List<Town> townList) {
+    private List<String> buildPic(Town town) {
+//        System.out.println(town);
+        List<String> result = new ArrayList<>();
+        if(town!=null) {
+            String picUrl = town.getPicUrl();
+            if (picUrl != null && !"".equals(picUrl)) {
+                result.add(picUrl);
+            }
+        }
+        return result;
+    }
+
+    private List<String> buildPic(List<Town> townList) {
         List<String> result = new ArrayList<>();
         for(Town t : townList) {
             String picUrl = t.getPicUrl();
