@@ -40,10 +40,15 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Transactional
     void updateJylx(String jylx, String sfzh);
 
-    @Query("UPDATE Personal p SET p.bqdd=?1,p.bqsj=?2,p.bz=?3 WHERE p.hzsfzh=?4")
+    @Query("UPDATE Personal p SET p.bqdd=?1,p.bqsj=?2,p.bz=?3,p.bqddid=?4 WHERE p.hzsfzh=?5")
     @Modifying
     @Transactional
-    void updateBqxx(String bqdd, String bqsj, String bz, String hzsfzh);
+    void updateBqxx(String bqdd, String bqsj, String bz, Integer bqddid, String hzsfzh);
+
+    @Query("UPDATE Personal p SET p.bqddid=?1 WHERE p.hzsfzh=?2")
+    @Modifying
+    @Transactional
+    void updateBqddid(Integer bqddid, String hzsfzh);
 
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.xb, COUNT(p.id)) FROM Personal p GROUP BY p.xb")
     List<PieDto> findPieByXb();

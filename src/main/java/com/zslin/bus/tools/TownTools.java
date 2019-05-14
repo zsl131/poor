@@ -25,6 +25,18 @@ public class TownTools {
     @Autowired
     private IUserTownDao userTownDao;
 
+    public static Integer buildBqddid(String bqdd) {
+        //17:昭阳区靖安易迁安置点 - 靖安易迁安置点
+        //231:彝良县发界安置点 - 发界安置点
+        //234:鲁甸县卯家湾易迁安置点 - 卯家湾
+        if(bqdd==null) { return null; }
+        else if(bqdd.contains("靖安易迁安置点")) {return 17;}
+        else if(bqdd.contains("发界安置点")) {return 231;}
+        else if(bqdd.contains("卯家湾")) {return 234;}
+
+        return null;
+    }
+
     public List<TownDto> buildTown() {
         List<TownDto> result = new ArrayList<>();
         Sort sort = SimpleSortBuilder.generateSort("orderNo");

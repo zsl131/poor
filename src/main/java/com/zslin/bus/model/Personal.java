@@ -201,6 +201,9 @@ public class Personal {
     /** 种植地面积 */
     private Float zzdmj = 0f;
 
+    /** 可退耕面积 */
+    private Float ktgmj = 0f;
+
     /** 户主ID */
     private Integer hzid;
 
@@ -236,6 +239,25 @@ public class Personal {
 
     /** 残疾证号 */
     private String cjzh;
+
+    /** 搬迁地点ID */
+    private Integer bqddid;
+
+    public Integer getBqddid() {
+        return bqddid;
+    }
+
+    public void setBqddid(Integer bqddid) {
+        this.bqddid = bqddid;
+    }
+
+    public Float getKtgmj() {
+        return ktgmj;
+    }
+
+    public void setKtgmj(Float ktgmj) {
+        this.ktgmj = ktgmj;
+    }
 
     public String getCjzh() {
         return cjzh;

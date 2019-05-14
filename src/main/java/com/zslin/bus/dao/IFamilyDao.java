@@ -17,10 +17,10 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
 
     Family findBySfzh(String sfzh);
 
-    @Query("UPDATE Family f SET f.zjd=?1, f.ld=?2, f.gd=?3, f.zzpz=?4, f.zzdmj=?5 WHERE f.sfzh=?6")
+    @Query("UPDATE Family f SET f.zjd=?1, f.ld=?2, f.gd=?3, f.zzpz=?4, f.zzdmj=?5, f.ktgmj=?6 WHERE f.sfzh=?7")
     @Modifying
     @Transactional
-    void updateIndustry(Float zjd, Float ld, Float gd, String zzpz, Float zzdmj, String sfzh);
+    void updateIndustry(Float zjd, Float ld, Float gd, String zzpz, Float zzdmj, Float ktgmj, String sfzh);
 
     /** 获取所有户数 */
     @Query("SELECT COUNT(f.id) FROM Family f ")
@@ -35,10 +35,10 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
     @Transactional
     void updateCount(Integer ldlrs, Integer jyrs, String hzsfzh);
 
-    @Query("UPDATE Family f SET f.bqdd=?1,f.bqsj=?2,f.bz=?3 WHERE f.sfzh=?4")
+    @Query("UPDATE Family f SET f.bqdd=?1,f.bqsj=?2,f.bz=?3,f.bqddid=?4 WHERE f.sfzh=?5")
     @Modifying
     @Transactional
-    void updateBqxx(String bqdd, String bqsj, String bz, String hzsfzh);
+    void updateBqxx(String bqdd, String bqsj, String bz, Integer bqddid, String hzsfzh);
 
     @Query("SELECT new com.zslin.bus.dto.PieDto(f.bqdd, COUNT(f.id)) FROM Family f GROUP BY f.bqdd")
     List<PieDto> findPieByBqdd();

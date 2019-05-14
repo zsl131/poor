@@ -7,6 +7,7 @@ import com.zslin.bus.model.*;
 import com.zslin.bus.tools.ExcelBasicTools;
 import com.zslin.bus.tools.PersonalXhTools;
 import com.zslin.bus.tools.PictureTools;
+import com.zslin.bus.tools.TownTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,19 @@ public class TestController {
 
     @Autowired
     private ConfigTools configTools;
+
+    @RequestMapping(value = "rebuildBqdd")
+    public String rebuildBqdd() {
+        List<Family> list = familyDao.listByHql("FROM Family f WHERE f.bqdd IS NOT NULL");
+        for(Family f : list) {
+            String bqdd = f.getBqdd();
+            Integer ddid = TownTools.buildBqddid(bqdd);
+            personalDao.updateBqddid(ddid, f.getSfzh());
+            f.setBqddid(ddid);
+            familyDao.save(f);
+        }
+        return "操作完成";
+    }
 
     @RequestMapping(value = "index")
     public String index(HttpServletRequest request, String p) {

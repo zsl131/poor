@@ -1,5 +1,7 @@
 package com.zslin.test;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zslin.bus.dao.IFamilyDao;
 import com.zslin.bus.dao.IPersonalDao;
 import com.zslin.bus.dao.ITownDao;
@@ -43,6 +45,17 @@ public class NormalTest {
 
     @Autowired
     private PersonalCountTools personalCountTools;
+
+    @Test
+    public void test10() {
+        String params = "{\"zzpz_4\":4,\"zzpz_3\":3,\"zzpz_2\":2,\"zzpz_1\":1,\"zzpz_14\":14,\"headerParams\":{\"cookie\":\"Webstorm-2add6c74=f18bb877-a306-431a-a8db-a204040b153f\",\"isadminuser\":\"1\",\"userid\":\"1\",\"username\":\"root\"},\"zzpz_15\":15,\"zjd\":0,\"ld\":0,\"zzpz_8\":5,\"zzpz_7\":6,\"zzpz_6\":7,\"id\":1035,\"zzpz_5\":8,\"zzpz_12\":13,\"gd\":0,\"zzpz_13\":16,\"zzpz_10\":11,\"zzpz_9\":9,\"zzpz_11\":12}";
+        JSONObject jsonObj = JSON.parseObject(params);
+        for(String key : jsonObj.keySet()) {
+            System.out.println(key);
+        }
+        Float f = jsonObj.getFloat("ktgmj");
+        System.out.println(f);
+    }
 
     @Test
     public void test09() {

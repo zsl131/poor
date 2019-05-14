@@ -19,6 +19,9 @@ public interface IDictionaryDao extends BaseRepository<Dictionary, Integer>, Jpa
 
     List<Dictionary> findByPcode(String pcode);
 
+    @Query("SELECT d.name FROM Dictionary d WHERE d.pcode=?1 AND d.code=?2")
+    String queryName(String pcode, String code);
+
     Dictionary findByPidAndCode(Integer pid, String code);
 
     Dictionary findByPcodeAndCode(String pcode, String code);

@@ -83,6 +83,9 @@ public class Family {
     /** 种植地面积 */
     private Float zzdmj = 0f;
 
+    /** 可退耕面积 */
+    private Float ktgmj = 0f;
+
     /** 类型：卡户/随迁户 */
     private String lx;
 
@@ -91,6 +94,25 @@ public class Family {
 
     /** 村庄名称 */
     private String czmc;
+
+    /** 搬迁地点ID */
+    private Integer bqddid;
+
+    public Integer getBqddid() {
+        return bqddid;
+    }
+
+    public void setBqddid(Integer bqddid) {
+        this.bqddid = bqddid;
+    }
+
+    public Float getKtgmj() {
+        return ktgmj;
+    }
+
+    public void setKtgmj(Float ktgmj) {
+        this.ktgmj = ktgmj;
+    }
 
     public Integer getLdlrs() {
         return ldlrs;

@@ -9,10 +9,7 @@ import com.zslin.bus.common.annotations.Function;
 import com.zslin.bus.common.dto.QueryListDto;
 import com.zslin.bus.common.tools.JsonTools;
 import com.zslin.bus.common.tools.QueryTools;
-import com.zslin.bus.dao.IAssetsDao;
-import com.zslin.bus.dao.IDictionaryDao;
-import com.zslin.bus.dao.IFamilyDao;
-import com.zslin.bus.dao.IPersonalDao;
+import com.zslin.bus.dao.*;
 import com.zslin.bus.dto.PersonalCountDto;
 import com.zslin.bus.dto.PieDto;
 import com.zslin.bus.model.*;
@@ -50,6 +47,9 @@ public class PersonalService {
 
     @Autowired
     private TownTools townTools;
+
+    @Autowired
+    private IFamilyPlantDao familyPlantDao;
 
     public JsonResult list(String params) {
         QueryListDto qld = QueryTools.buildQueryListDto(params);
@@ -197,9 +197,10 @@ public class PersonalService {
             String bqdd = p.getBqdd();
             String bqsj = p.getBqsj();
             String bz = p.getBz();
+            Integer bqddid = TownTools.buildBqddid(bqdd);
 
-            personalDao.updateBqxx(bqdd, bqsj, bz, hzsfzh);
-            familyDao.updateBqxx(bqdd, bqsj, bz, hzsfzh);
+            personalDao.updateBqxx(bqdd, bqsj, bz, bqddid, hzsfzh);
+            familyDao.updateBqxx(bqdd, bqsj, bz, bqddid, hzsfzh);
 
             return JsonResult.success("修改搬迁信息成功");
         } catch (Exception e) {
@@ -279,22 +280,51 @@ public class PersonalService {
     @Function("修改人员产业信息")
     public JsonResult updateIndustry(String params) {
         try {
+//            System.out.println(params);
             Personal p = JSONObject.toJavaObject(JSON.parseObject(params), Personal.class);
             Personal obj = personalDao.findOne(p.getId());
-            Float zjd = p.getZjd(), ld = p.getLd(), gd = p.getGd(), zzdmj = p.getZzdmj();
-            zjd = zjd==null?0f:zjd; ld = ld==null?0:ld; gd = gd==null?0:gd; zzdmj = zzdmj==null?0:zzdmj;
+            Float zjd = p.getZjd(), ld = p.getLd(), gd = p.getGd(), ktgmj = p.getKtgmj();
+            zjd = zjd==null?0f:zjd; ld = ld==null?0:ld; gd = gd==null?0:gd; ktgmj = ktgmj==null?0:ktgmj;
             String zzpz = p.getZzpz();
             obj.setZjd(zjd);
             obj.setLd(ld);
             obj.setGd(gd);
             obj.setZzpz(zzpz);
+            obj.setKtgmj(ktgmj);
+            Float zzdmj = buildZzpz(obj.getHzsfzh(), params);
             obj.setZzdmj(zzdmj);
+
             personalDao.save(obj);
-            familyDao.updateIndustry(zjd, ld, gd, zzpz, zzdmj, obj.getHzsfzh());
+            familyDao.updateIndustry(zjd, ld, gd, zzpz, zzdmj, ktgmj, obj.getHzsfzh());
             return JsonResult.success("修改产业信息成功");
         } catch (Exception e) {
 //            e.printStackTrace();
             return JsonResult.error("数据保存失败："+e.getMessage());
         }
+    }
+
+    private Float buildZzpz(String hzsfzh, String params) {
+        Float zzdmj = 0f; //种植面积
+        JSONObject jsonObj = JSON.parseObject(params);
+        for(String key : jsonObj.keySet()) {
+            System.out.println(key);
+            if(key.contains("_")) {
+                Float val = jsonObj.getFloat(key); //值
+                String zzpzdm = key.split("_")[1]; //种植品种代码
+                FamilyPlant fp = familyPlantDao.findByHzsfzhAndZzpzdm(hzsfzh, zzpzdm);
+                if(fp!=null) {
+                    fp.setZzmj(val);
+                } else {
+                    fp = new FamilyPlant();
+                    fp.setZzmj(val);
+                    fp.setZzpzmc(dictionaryDao.queryName("DICT_PLANT", zzpzdm));
+                    fp.setHzsfzh(hzsfzh);
+                    fp.setZzpzdm(zzpzdm);
+                }
+                familyPlantDao.save(fp);
+                zzdmj += val;
+            }
+        }
+        return zzdmj;
     }
 }
