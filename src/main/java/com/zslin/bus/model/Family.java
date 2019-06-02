@@ -98,6 +98,43 @@ public class Family {
     /** 搬迁地点ID */
     private Integer bqddid;
 
+    /** 20190602 **/
+
+    /** 自然村 */
+    private String zrc;
+
+    /** 户编号 */
+    private String hbh;
+
+    /** 安置方式 */
+    private String azfs;
+
+    public String getZrc() {
+        return zrc;
+    }
+
+    public void setZrc(String zrc) {
+        this.zrc = zrc;
+    }
+
+    public String getHbh() {
+        return hbh;
+    }
+
+    public void setHbh(String hbh) {
+        this.hbh = hbh;
+    }
+
+    public String getAzfs() {
+        return azfs;
+    }
+
+    public void setAzfs(String azfs) {
+        this.azfs = azfs;
+    }
+
+    /** 20190602 **/
+
     public Integer getBqddid() {
         return bqddid;
     }

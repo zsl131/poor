@@ -3,6 +3,8 @@ package com.zslin.bus.tools;
 import com.zslin.bus.model.Dictionary;
 import com.zslin.bus.model.Personal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,5 +73,33 @@ public class PersonalTools {
             else if(wgdd.contains("昆明")) {res = "云南"; break;}
         }
         return res;
+    }
+
+    private static int CUR_YEAR;
+    private static int CUR_MONTH;
+    private static int CUR_DAY;
+
+    static {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dayStr = sdf.format(new Date());
+        CUR_YEAR = Integer.parseInt(dayStr.substring(0, 4));
+        CUR_MONTH = Integer.parseInt(dayStr.substring(4, 6));
+        CUR_DAY = Integer.parseInt(dayStr.substring(6, 8));
+    }
+
+    /** 根据身份证号获取年龄 */
+    public static Integer buildAge(String sfzh) {
+        try {
+            Integer year = Integer.parseInt(sfzh.substring(6, 10));
+            Integer month = Integer.parseInt(sfzh.substring(10, 12));
+            Integer day = Integer.parseInt(sfzh.substring(12, 14));
+            Integer age = CUR_YEAR - year;
+            if(CUR_MONTH==month && CUR_DAY<day) {
+                age = age - 1;
+            } else if(CUR_MONTH<month) {age = age - 1;}
+            return age;
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

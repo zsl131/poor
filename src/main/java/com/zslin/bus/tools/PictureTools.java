@@ -77,7 +77,7 @@ public class PictureTools {
                         PictureDto pd = buildDto(name);
                         Personal p = null;
                         if(isSfzh) {
-                            p = personalDao.findByCzidAndSfzh(xzid, pd.getName());
+                            p = personalDao.findBySfzh(pd.getName());
                         } else {
                             p = personalDao.findByCzidAndXm(xzid, pd.getName());
                         }

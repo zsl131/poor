@@ -36,6 +36,8 @@ public class ExcelBasicTools {
                     p = buildPersonalYbj0423(row, isStr);
                 } else if("buildPersonal0429".equals(methodName)) {
                     p = buildPersonal0429(row, isStr);
+                } else if("buildPersonal0602".equals(methodName)) {
+                    p = buildPersonal0602(row, isStr);
                 }
                 if(p!=null) {
                     result.add(p);
@@ -358,6 +360,117 @@ public class ExcelBasicTools {
                     p.setBz(val); break;
                 case 32: //类型：卡户/随迁户
                     p.setLx(val); break;
+            }
+            index++;
+        }
+        return p;
+    }
+
+    /** 将一行数据转换成一个对象 */
+    public static Personal buildPersonal0602(Row row, boolean isStr) {
+        Personal p = new Personal();
+        int index = 0;
+        for(Cell cell : row) {
+            String val = getBaseCellValue(cell, isStr);
+            switch (index) {
+                case 0: //序号
+                    p.setXh(buildInteger(val)); break;
+                case 2: //乡镇
+                    p.setXzmc(val); break;
+                case 3: //乡村
+                    p.setCzmc(val); break;
+                case 4: //自然村
+                    p.setZrc(val); break;
+                case 5: //户编号
+                    p.setHbh(val); break;
+                case 6: //姓名
+                    p.setXm(val); break;
+                case 7: //身份证号
+                    val = val.length()>=18?val.substring(0, 18):val; //处理身份证号
+                    p.setSfzh(val); break;
+                case 8: //家庭人数
+                    p.setJtrs(buildInteger(val)); break;
+                case 9: //与户主关系
+                    p.setYhzgx(val); break;
+                case 10: //民族
+                    p.setMz(val); break;
+                case 11: //文化程度
+                    p.setWhcd(val); break;
+                case 12: //国办劳动力情况
+                    p.setGbldlqk(val); break;
+                case 13: //是否是劳动力
+                    p.setSfsldl(val); break;
+                case 14: //贫困属性
+                    p.setPksx(val); break;
+                case 15: //是否在校
+                    p.setSfzx(val); break;
+                case 16: //就读学校
+                    p.setJdxx(val); break;
+                case 17: //就读年级
+                    p.setJdnj(val); break;
+                case 18: //是否享受资助
+                    p.setSfxszz(val); break;
+                case 19: //资助项目
+                    p.setZzxm(val); break;
+                case 20: //资助金额
+                    p.setZzje(buildFloat(val)); break;
+                case 21: //健康状况
+                    p.setJkzk(val); break;
+                case 22: //是否养老保险
+                    p.setSfylbx(val); break;
+                case 23: //是否医疗保险
+                    p.setSfyb(val); break;
+                case 24: //参保险种
+                    p.setCbxz(val); break;
+                case 25: //参保单位
+                    p.setCbdw(val); break;
+                case 26: //是否患病
+                    p.setSfhb(val); break;
+                case 27: //参加过何种培训
+                    p.setCjhzpx(val); break;
+                case 28: //务工地点
+                    p.setWgdd(val); break;
+                case 29: //企业名称
+                    p.setQymc(val); break;
+                case 30: //岗位名称
+                    p.setGwmc(val); break;
+                case 31: //务工时间
+                    p.setWgsj(val); break;
+                case 32: //月工资收入
+                    p.setYgz(buildFloat(val)); break;
+                case 33: //创业项目
+                    p.setCyxm(val); break;
+                case 34: //创业地点
+                    p.setCydd(val); break;
+                case 35: //创业时间
+                    p.setCysj(val); break;
+                case 36: //月收入
+                    p.setYsr(buildFloat(val)); break;
+                case 37: //务工去向
+                    p.setWgqx(val); break;
+                case 38: //公益性岗位
+                    p.setGyxgw(val); break;
+                case 39: //自主创业
+                    p.setZzcy(val); break;
+                case 40: //无法外出原因
+                    p.setWfwcyy(val); break;
+                case 41: //培训需求
+                    p.setPxxq(val); break;
+                //42 - 47：三块地和产业
+                case 48: //联系电话
+                    p.setLxdh(val); break;
+                case 49: //致贫原因
+                    p.setZpyy(val); break;
+                case 50: //搬迁时间
+                    p.setBqsj(val); break;
+                case 51: //人口自然增减
+                    p.setRkzrzj(val); break;
+                case 52: //搬迁地点
+                    p.setBqdd(val); break;
+                case 53: //安置方式
+                    p.setAzfs(val); break;
+                case 54: //备注
+                    p.setBz(val); break;
             }
             index++;
         }

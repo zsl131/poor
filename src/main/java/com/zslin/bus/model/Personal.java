@@ -243,6 +243,76 @@ public class Personal {
     /** 搬迁地点ID */
     private Integer bqddid;
 
+    /** 20190602 **/
+
+    /** 自然村 */
+    private String zrc;
+
+    /** 户编号 */
+    private String hbh;
+
+    /** 致贫原因 */
+    private String zpyy;
+
+    /** 安置方式 */
+    private String azfs;
+
+    /** 人口自然增减 */
+    private String rkzrzj;
+
+    /** 国办劳动力情况 */
+    private String gbldlqk;
+
+    public String getGbldlqk() {
+        return gbldlqk;
+    }
+
+    public void setGbldlqk(String gbldlqk) {
+        this.gbldlqk = gbldlqk;
+    }
+
+    public String getZrc() {
+        return zrc;
+    }
+
+    public void setZrc(String zrc) {
+        this.zrc = zrc;
+    }
+
+    public String getHbh() {
+        return hbh;
+    }
+
+    public void setHbh(String hbh) {
+        this.hbh = hbh;
+    }
+
+    public String getZpyy() {
+        return zpyy;
+    }
+
+    public void setZpyy(String zpyy) {
+        this.zpyy = zpyy;
+    }
+
+    public String getAzfs() {
+        return azfs;
+    }
+
+    public void setAzfs(String azfs) {
+        this.azfs = azfs;
+    }
+
+    public String getRkzrzj() {
+        return rkzrzj;
+    }
+
+    public void setRkzrzj(String rkzrzj) {
+        this.rkzrzj = rkzrzj;
+    }
+
+    /** 20190602 **/
+
     public Integer getBqddid() {
         return bqddid;
     }
