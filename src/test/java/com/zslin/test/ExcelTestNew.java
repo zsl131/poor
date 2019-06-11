@@ -121,6 +121,7 @@ public class ExcelTestNew {
     }
 
     private String buildXb(String sfzh) {
+        if(sfzh==null || sfzh.length()<18) {return "";}
         String sex = "";
         if (Integer.parseInt(sfzh.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
             sex = "女";
