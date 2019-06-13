@@ -78,11 +78,11 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     List<PieDto> findPieBySfhb();
 
     /** 务工地域 */
-    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgdy, COUNT(p.id)) FROM Personal p WHERE p.wgdy IS NOT NULL AND p.wgdy!='' GROUP BY p.wgdy")
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgdy, COUNT(p.id)) FROM Personal p WHERE p.wgdy IS NOT NULL AND p.wgdy!='' AND p.jylx='外出务工' GROUP BY p.wgdy")
     List<PieDto> findPieByWgdy();
 
     /** 务工省份 */
-    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgsf, COUNT(p.id)) FROM Personal p WHERE p.wgsf IS NOT NULL AND p.wgsf!='' GROUP BY p.wgsf")
+    @Query("SELECT new com.zslin.bus.dto.PieDto(p.wgsf, COUNT(p.id)) FROM Personal p WHERE p.wgsf IS NOT NULL AND p.wgsf!='' AND p.jylx='外出务工' GROUP BY p.wgsf")
     List<PieDto> findPieByWgsf();
 
     /** 就业类型 */
