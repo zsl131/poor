@@ -513,8 +513,17 @@ public class ExcelBasicTools {
                     res = String.valueOf(cell.getBooleanCellValue()); break;
                 case Cell.CELL_TYPE_FORMULA:
                     if(isStr) {
-                        res = String.valueOf(cell.getStringCellValue()); break;
+//                        System.out.println("++++++"+cell.getNumericCellValue());
+//                        res = String.valueOf(cell.getStringCellValue()); break;
+                        try {
+                            res = String.valueOf(cell.getNumericCellValue());
+                            break;
+                        } catch (Exception e) {
+                            res = String.valueOf(cell.getStringCellValue());
+                            break;
+                        }
                     } else {
+                        //System.out.println("-----"+cell.getCellFormula());
                         res = String.valueOf(cell.getCellFormula()); break;
                     }
 //                    res = String.valueOf(cell.getNumericCellValue()); break;

@@ -1,6 +1,7 @@
 package com.zslin.bus.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.zslin.bus.poi.util.ExcelResources;
 
 import javax.persistence.*;
 
@@ -271,6 +272,7 @@ public class Personal {
         this.gbldlqk = gbldlqk;
     }
 
+    @ExcelResources(title="自然村",order=3)
     public String getZrc() {
         return zrc;
     }
@@ -279,6 +281,7 @@ public class Personal {
         this.zrc = zrc;
     }
 
+    @ExcelResources(title="户编号",order=4)
     public String getHbh() {
         return hbh;
     }
@@ -287,6 +290,7 @@ public class Personal {
         this.hbh = hbh;
     }
 
+    @ExcelResources(title="致贫原因",order=46)
     public String getZpyy() {
         return zpyy;
     }
@@ -295,6 +299,7 @@ public class Personal {
         this.zpyy = zpyy;
     }
 
+    @ExcelResources(title="安置方式",order=49)
     public String getAzfs() {
         return azfs;
     }
@@ -321,6 +326,7 @@ public class Personal {
         this.bqddid = bqddid;
     }
 
+    @ExcelResources(title="可退耕面积",order=44)
     public Float getKtgmj() {
         return ktgmj;
     }
@@ -361,6 +367,7 @@ public class Personal {
         this.czid = czid;
     }
 
+    @ExcelResources(title="行政村",order=2)
     public String getCzmc() {
         return czmc;
     }
@@ -369,6 +376,7 @@ public class Personal {
         this.czmc = czmc;
     }
 
+    @ExcelResources(title="林地面积",order=42)
     public Float getLd() {
         return ld;
     }
@@ -385,6 +393,7 @@ public class Personal {
         this.jylx = jylx;
     }
 
+    @ExcelResources(title="资助项目",order=18)
     public String getZzxmmc() {
         return zzxmmc;
     }
@@ -425,6 +434,7 @@ public class Personal {
         this.xzid = xzid;
     }
 
+    @ExcelResources(title="乡(镇)",order=1)
     public String getXzmc() {
         return xzmc;
     }
@@ -495,6 +505,7 @@ public class Personal {
                 '}';
     }
 
+    @ExcelResources(title="家庭人数",order=7)
     public Integer getJtrs() {
         return jtrs;
     }
@@ -519,6 +530,7 @@ public class Personal {
         this.id = id;
     }
 
+    @ExcelResources(title="姓名",order=5)
     public String getXm() {
         return xm;
     }
@@ -527,6 +539,7 @@ public class Personal {
         this.xm = xm;
     }
 
+    @ExcelResources(title="身份证号",order=6)
     public String getSfzh() {
         return sfzh;
     }
@@ -543,6 +556,7 @@ public class Personal {
         this.jtdz = jtdz;
     }
 
+    @ExcelResources(title="性别",order=10)
     public String getXb() {
         return xb;
     }
@@ -551,6 +565,7 @@ public class Personal {
         this.xb = xb;
     }
 
+    @ExcelResources(title="民族",order=9)
     public String getMz() {
         return mz;
     }
@@ -559,6 +574,7 @@ public class Personal {
         this.mz = mz;
     }
 
+    @ExcelResources(title="脱贫属性",order=13)
     public String getPksx() {
         return pksx;
     }
@@ -575,6 +591,7 @@ public class Personal {
         this.yqhsx = yqhsx;
     }
 
+    @ExcelResources(title="联系电话",order=45)
     public String getLxdh() {
         return lxdh;
     }
@@ -583,6 +600,7 @@ public class Personal {
         this.lxdh = lxdh;
     }
 
+    @ExcelResources(title="搬迁地点",order=48)
     public String getBqdd() {
         return bqdd;
     }
@@ -591,6 +609,7 @@ public class Personal {
         this.bqdd = bqdd;
     }
 
+    @ExcelResources(title="搬迁年度",order=47)
     public String getBqsj() {
         return bqsj;
     }
@@ -599,6 +618,7 @@ public class Personal {
         this.bqsj = bqsj;
     }
 
+    @ExcelResources(title="备注",order=50)
     public String getBz() {
         return bz;
     }
@@ -615,6 +635,7 @@ public class Personal {
         this.nl = nl;
     }
 
+    @ExcelResources(title="文化程度",order=11)
     public String getWhcd() {
         return whcd;
     }
@@ -623,6 +644,7 @@ public class Personal {
         this.whcd = whcd;
     }
 
+    @ExcelResources(title="劳动力",order=12)
     public String getSfsldl() {
         return sfsldl;
     }
@@ -631,6 +653,7 @@ public class Personal {
         this.sfsldl = sfsldl;
     }
 
+    @ExcelResources(title="是否在校",order=14)
     public String getSfzx() {
         return sfzx;
     }
@@ -639,6 +662,7 @@ public class Personal {
         this.sfzx = sfzx;
     }
 
+    @ExcelResources(title="就读学校",order=15)
     public String getJdxx() {
         return jdxx;
     }
@@ -647,6 +671,7 @@ public class Personal {
         this.jdxx = jdxx;
     }
 
+    @ExcelResources(title="就读年级",order=16)
     public String getJdnj() {
         return jdnj;
     }
@@ -655,6 +680,7 @@ public class Personal {
         this.jdnj = jdnj;
     }
 
+    @ExcelResources(title="是否享受资助",order=17)
     public String getSfxszz() {
         return sfxszz;
     }
@@ -671,6 +697,7 @@ public class Personal {
         this.zzxm = zzxm;
     }
 
+    @ExcelResources(title="资助金额",order=19)
     public Float getZzje() {
         return zzje;
     }
@@ -679,6 +706,7 @@ public class Personal {
         this.zzje = zzje;
     }
 
+    @ExcelResources(title="健康状况",order=20)
     public String getJkzk() {
         return jkzk;
     }
@@ -687,6 +715,7 @@ public class Personal {
         this.jkzk = jkzk;
     }
 
+    @ExcelResources(title="城乡居民养老保险是否参保",order=21)
     public String getSfylbx() {
         return sfylbx;
     }
@@ -695,6 +724,7 @@ public class Personal {
         this.sfylbx = sfylbx;
     }
 
+    @ExcelResources(title="是否参加基本医疗保险",order=22)
     public String getSfyb() {
         return sfyb;
     }
@@ -703,6 +733,7 @@ public class Personal {
         this.sfyb = sfyb;
     }
 
+    @ExcelResources(title="参保险种（居民、职工）",order=23)
     public String getCbxz() {
         return cbxz;
     }
@@ -711,6 +742,7 @@ public class Personal {
         this.cbxz = cbxz;
     }
 
+    @ExcelResources(title="参保地或参保单位",order=24)
     public String getCbdw() {
         return cbdw;
     }
@@ -719,6 +751,7 @@ public class Personal {
         this.cbdw = cbdw;
     }
 
+    @ExcelResources(title="是否患特殊病慢性病或者9类15种重大疾病（儿童白血病（含急性淋巴细胞白血病和急性早幼粒细胞白血病）、儿童先天性心脏病（含房间隔缺损、室间隔缺损、动脉导管未闭、肺动脉瓣狭窄、法式四联征以及合并两种或以上的复杂性先心病）、食管癌、胃癌、结肠癌、直肠癌、终末期肾病、重性精神病、耐多药结核）",order=25)
     public String getSfhb() {
         return sfhb;
     }
@@ -727,6 +760,7 @@ public class Personal {
         this.sfhb = sfhb;
     }
 
+    @ExcelResources(title="参加过何种培训",order=26)
     public String getCjhzpx() {
         return cjhzpx;
     }
@@ -751,6 +785,7 @@ public class Personal {
         this.wgdy = wgdy;
     }
 
+    @ExcelResources(title="务工地点",order=27)
     public String getWgdd() {
         return wgdd;
     }
@@ -759,6 +794,7 @@ public class Personal {
         this.wgdd = wgdd;
     }
 
+    @ExcelResources(title="企业名称",order=28)
     public String getQymc() {
         return qymc;
     }
@@ -767,6 +803,7 @@ public class Personal {
         this.qymc = qymc;
     }
 
+    @ExcelResources(title="岗位名称",order=29)
     public String getGwmc() {
         return gwmc;
     }
@@ -775,6 +812,7 @@ public class Personal {
         this.gwmc = gwmc;
     }
 
+    @ExcelResources(title="务工时间",order=30)
     public String getWgsj() {
         return wgsj;
     }
@@ -783,6 +821,7 @@ public class Personal {
         this.wgsj = wgsj;
     }
 
+    @ExcelResources(title="月工资收入",order=31)
     public Float getYgz() {
         return ygz;
     }
@@ -791,6 +830,7 @@ public class Personal {
         this.ygz = ygz;
     }
 
+    @ExcelResources(title="创业项目",order=32)
     public String getCyxm() {
         return cyxm;
     }
@@ -799,6 +839,7 @@ public class Personal {
         this.cyxm = cyxm;
     }
 
+    @ExcelResources(title="企业地点",order=33)
     public String getCydd() {
         return cydd;
     }
@@ -807,6 +848,7 @@ public class Personal {
         this.cydd = cydd;
     }
 
+    @ExcelResources(title="企业时间",order=34)
     public String getCysj() {
         return cysj;
     }
@@ -815,6 +857,7 @@ public class Personal {
         this.cysj = cysj;
     }
 
+    @ExcelResources(title="月收入",order=35)
     public Float getYsr() {
         return ysr;
     }
@@ -823,6 +866,7 @@ public class Personal {
         this.ysr = ysr;
     }
 
+    @ExcelResources(title="务工去向",order=36)
     public String getWgqx() {
         return wgqx;
     }
@@ -831,6 +875,7 @@ public class Personal {
         this.wgqx = wgqx;
     }
 
+    @ExcelResources(title="公益性岗位",order=37)
     public String getGyxgw() {
         return gyxgw;
     }
@@ -839,6 +884,7 @@ public class Personal {
         this.gyxgw = gyxgw;
     }
 
+    @ExcelResources(title="自主创业",order=38)
     public String getZzcy() {
         return zzcy;
     }
@@ -847,6 +893,7 @@ public class Personal {
         this.zzcy = zzcy;
     }
 
+    @ExcelResources(title="无法外出原因",order=39)
     public String getWfwcyy() {
         return wfwcyy;
     }
@@ -855,6 +902,7 @@ public class Personal {
         this.wfwcyy = wfwcyy;
     }
 
+    @ExcelResources(title="培训需求",order=40)
     public String getPxxq() {
         return pxxq;
     }
@@ -863,6 +911,7 @@ public class Personal {
         this.pxxq = pxxq;
     }
 
+    @ExcelResources(title="宅基地面积",order=43)
     public Float getZjd() {
         return zjd;
     }
@@ -871,6 +920,7 @@ public class Personal {
         this.zjd = zjd;
     }
 
+    @ExcelResources(title="耕地面积",order=41)
     public Float getGd() {
         return gd;
     }
@@ -919,6 +969,7 @@ public class Personal {
         this.hzsfzh = hzsfzh;
     }
 
+    @ExcelResources(title="与户主关系",order=8)
     public String getYhzgx() {
         return yhzgx;
     }

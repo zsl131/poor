@@ -50,6 +50,10 @@ public interface IPersonalDao extends BaseRepository<Personal, Integer>, JpaSpec
     @Transactional
     void updateBqddid(Integer bqddid, String hzsfzh);
 
+    /** 获取管辖范围的人员，用于导出 */
+    @Query("FROM Personal p WHERE p.czid IN ?1 OR p.xzid IN ?1")
+    List<Personal> listOwn(List<Integer> townIds);
+
     @Query("SELECT new com.zslin.bus.dto.PieDto(p.xb, COUNT(p.id)) FROM Personal p GROUP BY p.xb")
     List<PieDto> findPieByXb();
 

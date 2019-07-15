@@ -49,4 +49,8 @@ public interface IFamilyDao extends BaseRepository<Family, Integer>, JpaSpecific
     List<Family> findByBqdd(String bqdd);
 
     List<Family> findByBqddAndBqsj(String bqdd, String bqsj);
+
+    /** 获取管辖范围的人员，用于导出 */
+    @Query("FROM Family f WHERE f.czid IN ?1 OR f.xzid IN ?1")
+    List<Family> listOwn(List<Integer> townIds);
 }
