@@ -9,6 +9,7 @@ import com.zslin.bus.dto.PlantDto;
 import com.zslin.bus.model.Family;
 import com.zslin.bus.model.Personal;
 import com.zslin.bus.poi.util.ExcelUtil;
+import com.zslin.bus.threadlocal.SystemThreadLocalHolder;
 import com.zslin.bus.tools.DownloadPlantTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
@@ -48,6 +49,7 @@ public class DownloadController {
     /** 导出种植品种 */
     @GetMapping(value = "downloadPlant")
     public void downloadPlant(HttpServletResponse res, String username) {
+        SystemThreadLocalHolder.remove();
         List<Integer> townIds = userTownDao.findTownId(username);
 
         List<Family> familyList ;
@@ -87,6 +89,7 @@ public class DownloadController {
     /** 导出人员 */
     @GetMapping(value = "downloadPersonal")
     public void downloadPersonal(HttpServletResponse res, String username) {
+        SystemThreadLocalHolder.remove();
         List<Integer> townIds = userTownDao.findTownId(username);
 
         List<Personal> personalList ;
