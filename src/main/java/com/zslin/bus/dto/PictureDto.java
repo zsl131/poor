@@ -10,12 +10,28 @@ public class PictureDto {
     /** 是否是房子 */
     private boolean isHouse;
 
+    private boolean isCar;
+
     public PictureDto() {
     }
 
     public PictureDto(String name, boolean isHouse) {
         this.name = name;
         this.isHouse = isHouse;
+    }
+
+    public PictureDto(String name, boolean isHouse, boolean isCar) {
+        this.name = name;
+        this.isHouse = isHouse;
+        this.isCar = isCar;
+    }
+
+    public boolean isCar() {
+        return isCar;
+    }
+
+    public void setCar(boolean car) {
+        isCar = car;
     }
 
     public String getName() {

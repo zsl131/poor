@@ -88,7 +88,7 @@ public class PictureTools {
                             addErrorPic(batchNo, name, "已有照片");
                             amount ++;
                         } */else {
-                            if(pd.isHouse()) {
+                            if(pd.isHouse() || pd.isCar()) {
                                 File outFile = new File(configTools.getUploadPath(UPLOAD_PATH_PRE) + File.separator + NormalTools.curDate("yyyyMMdd") + File.separator + UUID.randomUUID() + NormalTools.getFileType(getFileName(name)));
                                 String result = outFile.getAbsolutePath().replace(configTools.getUploadPath(), File.separator);
                                 FileUtils.copyInputStreamToFile(zf.getInputStream(ze), outFile);
@@ -102,7 +102,7 @@ public class PictureTools {
                                 a.setGsxm(p.getXm());
                                 a.setGsid(p.getId());
                                 a.setGssfzh(p.getSfzh());
-                                a.setMc("房子");
+                                a.setMc(pd.isHouse()?"房子":(pd.isCar()?"车子":"其他"));
                                 a.setUrl(result);
                                 assetsDao.save(a);
                                 sucAmount++;
@@ -158,13 +158,23 @@ public class PictureTools {
     }
 
     String [] HOUSE_ARRAY = new String[]{"家房屋", "房屋", "住房", "房子"};
+    String [] CAR_ARRAY = new String[]{"家车子", "车辆", "车", "车子"};
 
     public PictureDto buildDto(String name) {
         boolean isHouse = isHouse(name);
+        boolean isCar = isCar(name);
         name = getFileNameNoSuffix(name); //
         name = name.replace("户主", "");
         for(String a : HOUSE_ARRAY) {name = name.replace(a, "");}
-        return new PictureDto(name, isHouse);
+        for(String a : CAR_ARRAY) {name = name.replace(a, "");}
+
+        return new PictureDto(name, isHouse, isCar);
+    }
+
+    private boolean isCar(String name) {
+        boolean res = false;
+        for(String a : CAR_ARRAY) {if(name.contains(a)) {res = true; break;}}
+        return res;
     }
 
     private boolean isHouse(String name) {
