@@ -180,6 +180,7 @@ public class PictureTools {
     private boolean isHouse(String name) {
         boolean res = false;
         for(String a : HOUSE_ARRAY) {if(name.contains(a)) {res = true; break;}}
+//        System.out.println(name+"==========="+res);
         return res;
     }
 
