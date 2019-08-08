@@ -167,8 +167,23 @@ public class PictureTools {
         name = name.replace("户主", "");
         for(String a : HOUSE_ARRAY) {name = name.replace(a, "");}
         for(String a : CAR_ARRAY) {name = name.replace(a, "");}
-
+        name = rebuildName(name);
         return new PictureDto(name, isHouse, isCar);
+    }
+
+    private String rebuildName(String name) {
+        String res = name;
+        for(String a : HOUSE_ARRAY) {
+            if(res.contains(a)) {
+                res = res.split(a)[0];
+            }
+        }
+        for(String a : CAR_ARRAY) {
+            if(res.contains(a)) {
+                res = res.split(a)[0];
+            }
+        }
+        return res;
     }
 
     private boolean isCar(String name) {
