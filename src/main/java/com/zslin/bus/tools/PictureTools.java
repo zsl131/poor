@@ -157,8 +157,8 @@ public class PictureTools {
         pictureUploadRecordDao.save(record);
     }
 
-    String [] HOUSE_ARRAY = new String[]{"家房屋", "房屋", "住房", "房子"};
-    String [] CAR_ARRAY = new String[]{"家车子", "车辆", "车", "车子"};
+    String [] HOUSE_ARRAY = new String[]{"家房屋", "房屋", "住房", "房子", "fz", "fZ", "Fz", "FZ"};
+    String [] CAR_ARRAY = new String[]{"家车子", "车辆", "车", "车子", "cz", "cZ", "Cz", "CZ"};
 
     public PictureDto buildDto(String name) {
         boolean isHouse = isHouse(name);
