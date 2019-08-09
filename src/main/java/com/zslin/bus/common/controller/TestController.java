@@ -171,7 +171,8 @@ public class TestController {
     }
 
     @RequestMapping(value = "processPicture")
-    public String processPicture() {
+    public String processPicture(String from) {
+        from = from==null?"1":"0"; //1-身份证；0-姓名
         File dir = new File(configTools.getUploadPath("/publicFile/temp_zip"));
         if(!dir.exists()) {dir.mkdirs();}
         /*new Thread(new Runnable() {
@@ -181,7 +182,7 @@ public class TestController {
             }
         }).start();*/
         System.out.println("========file path ::: "+dir.getAbsolutePath());
-        processPic(dir);
+        processPic(dir, from);
 
         return "正在处理照片。。。";
     }
@@ -195,8 +196,8 @@ public class TestController {
     @Autowired
     private IPictureUploadDao pictureUploadDao;
 
-    private void processPic(File f) {
-        System.out.println("=========fileName::"+f.getName());
+    private void processPic(File f, String from) {
+        System.out.println("==========fileName::"+f.getName());
         if(f.isFile()) {
             String name = f.getName().toLowerCase().replace(".zip", "");
             Town t = null ;
@@ -212,7 +213,7 @@ public class TestController {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        pictureTools.readFile("xm", townId, f);
+                        pictureTools.readFile("1".equals(from)?"sfzh":"xm", townId, f);
                     }
                 }).start();
             }
@@ -220,7 +221,7 @@ public class TestController {
             File [] files = f.listFiles();
             if(files!=null) {
                 for (File file : files) {
-                    processPic(file);
+                    processPic(file, from);
                 }
             }
             if((files==null || files.length<=0) && !f.getName().contains("temp_zip")) {f.delete();}
