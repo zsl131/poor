@@ -63,7 +63,7 @@ public class PictureTools {
         Integer amount = 0;
         Integer sucAmount = 0;
         ZipInputStream zis = null;
-        String xzmc = townDao.findOne(xzid).getName();
+        String xzmc = xzid==0?"未知":townDao.findOne(xzid).getName();
         boolean isSfzh = ("1".equals(hqfs) || "sfzh".equals(hqfs)); //hqfs为1或sfzh时表示是以身份证号命名
         try {
             zis = new ZipInputStream(new FileInputStream(zipFile));

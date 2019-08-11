@@ -197,7 +197,7 @@ public class TestController {
     private IPictureUploadDao pictureUploadDao;
 
     private void processPic(File f, String from) {
-        System.out.println("==========fileName::"+f.getName());
+        System.out.println("20190811====fileName::"+f.getName());
         if(f.isFile()) {
             String name = f.getName().toLowerCase().replace(".zip", "");
             Town t = null ;
@@ -209,7 +209,7 @@ public class TestController {
             if(!"1".equals(from) && t==null) {
                 addPictureUpload(name);
             } else {
-                Integer townId = t.getId();
+                Integer townId = t==null?0:t.getId();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
