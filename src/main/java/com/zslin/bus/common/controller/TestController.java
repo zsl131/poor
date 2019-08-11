@@ -206,7 +206,7 @@ public class TestController {
             } catch (Exception e) {
                 t = townDao.findCunByNameLike(name);
             }
-            if(t==null) {
+            if(!"1".equals(from) && t==null) {
                 addPictureUpload(name);
             } else {
                 Integer townId = t.getId();
