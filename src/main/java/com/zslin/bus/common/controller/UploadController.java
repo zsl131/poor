@@ -2,6 +2,7 @@ package com.zslin.bus.common.controller;
 
 import com.zslin.basic.tools.ConfigTools;
 import com.zslin.basic.tools.NormalTools;
+import com.zslin.bus.tools.ImportTools;
 import com.zslin.bus.tools.PictureTools;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
@@ -32,6 +33,9 @@ public class UploadController {
 
     @Autowired
     private PictureTools pictureTools;
+
+    @Autowired
+    private ImportTools importTools;
 
     private static final String PATH_PRE = "/wangeditor/images";
     private static final String UPLOAD_PATH_PRE = "/publicFile/upload";
@@ -108,6 +112,27 @@ public class UploadController {
                 if(field.equals(tmp[0])) {result = tmp[1];}
             }
         } catch (Exception e) {
+        }
+        return result;
+    }
+
+    //通过Excel上传人员数据
+    @RequestMapping(value = "uploadPersonalExcel")
+    public String uploadPersonalExcel(@RequestParam("file")MultipartFile[] multipartFile,String extra) throws  Exception {
+        String result = "error";
+        if(multipartFile!=null && multipartFile.length>=1) {
+            MultipartFile file = multipartFile[0];
+            if(file!=null) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            importTools.process(file.getInputStream()); //
+                        } catch (IOException e) {
+                        }
+                    }
+                }).start();
+            }
         }
         return result;
     }

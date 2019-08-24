@@ -22,7 +22,7 @@ import java.util.List;
  * Created by zsl on 2019/4/25.
  */
 @Service
-@AdminAuth(psn = "业务管理", name = "图片上传", orderNum = 1, type = "1", url = "/admin/pictureUpload")
+@AdminAuth(psn = "业务管理", name = "数据上传", orderNum = 1, type = "1", url = "/admin/pictureUpload")
 public class PictureUploadService {
 
     @Autowired

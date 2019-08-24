@@ -101,19 +101,37 @@ public class SimpleSpecification<T> implements Specification<T> {
         return resultPre;
     }
 
+    private boolean isNumber(Object val) {
+        try {
+            Double.valueOf(val.toString());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Double getNumber(Object val) {
+        try {
+            Double d = Double.valueOf(val.toString());
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private Predicate generatePredicate(Root<T> root,CriteriaBuilder criteriaBuilder, SpecificationOperator op) {
 
         /** 根据不同的操作符返回特定的查询*/
         if(EQUAL.equalsIgnoreCase(op.getOper())) {
             return criteriaBuilder.equal(root.get(op.getKey()),op.getValue());
-        } else if(GRATE_EQUAL.equalsIgnoreCase(op.getOper())) {
-            return criteriaBuilder.ge(root.get(op.getKey()), (Number)op.getValue());
-        } else if(LESS_EQUAL.equalsIgnoreCase(op.getOper())) {
-            return criteriaBuilder.le(root.get(op.getKey()),(Number)op.getValue());
-        } else if(GRATE_THEN.equalsIgnoreCase(op.getOper())) {
-            return criteriaBuilder.gt(root.get(op.getKey()),(Number)op.getValue());
-        } else if(LESS_THEN.equalsIgnoreCase(op.getOper())) {
-            return criteriaBuilder.lt(root.get(op.getKey()),(Number)op.getValue());
+        } else if(GRATE_EQUAL.equalsIgnoreCase(op.getOper()) && isNumber(op.getValue())) {
+            return criteriaBuilder.ge(root.get(op.getKey()), getNumber(op.getValue()));
+        } else if(LESS_EQUAL.equalsIgnoreCase(op.getOper()) && isNumber(op.getValue())) {
+            return criteriaBuilder.le(root.get(op.getKey()),getNumber(op.getValue()));
+        } else if(GRATE_THEN.equalsIgnoreCase(op.getOper()) && isNumber(op.getValue())) {
+            return criteriaBuilder.gt(root.get(op.getKey()),getNumber(op.getValue()));
+        } else if(LESS_THEN.equalsIgnoreCase(op.getOper()) && isNumber(op.getValue())) {
+            return criteriaBuilder.lt(root.get(op.getKey()),getNumber(op.getValue()));
         } else if(LIKE.equalsIgnoreCase(op.getOper()) || LIKE_BEGIN_END.equalsIgnoreCase(op.getOper())) {
             return criteriaBuilder.like(root.get(op.getKey()),"%"+op.getValue()+"%");
         } else if(LIKE_BEGIN.equalsIgnoreCase(op.getOper())) {
