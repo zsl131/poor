@@ -78,7 +78,7 @@ public class ImportTools {
             p.setNl(PersonalTools.buildAge(p.getSfzh())); //年龄
 
             try {
-                Family oldFamily = loadFamily(p.getSfzh()); //
+                Family oldFamily = loadFamily(p.getSfzh()); //获取数据
 
                 if(isFamily(p)) { hz = p;
                     Family f = buildFamily(p);
