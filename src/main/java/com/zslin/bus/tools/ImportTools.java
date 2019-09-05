@@ -39,8 +39,10 @@ public class ImportTools {
 
     /** 处理上传的Excel */
     public void process(InputStream inputStream) {
+        System.out.println("==========开始处理上传的Excel文件===========");
         List<Dictionary> dataList = dictionaryDao.findByPcode("DICT_SUPPORT");
         List<Personal> personalList = ExcelBasicTools.buildByExcel(inputStream, 4, 0, "buildPersonal0822", true);
+        System.out.println("=======共解析出【"+personalList.size()+"】条人员信息=======");
 
         Sort sort = SimpleSortBuilder.generateSort("orderNo");
         List<Town> xzList = townDao.findParent(sort); //乡镇
@@ -66,7 +68,7 @@ public class ImportTools {
             p.setZzxmmc(zzxmmc);
             p.setLxdh(rebuildLxdh(p.getLxdh()));
 
-            p.setSfsldl("是".equals(p.getSfsldl())?"劳动力":"无劳动力");
+            p.setSfsldl(isLdl(p.getSfsldl())?"劳动力":"无劳动力");
 
             p.setJylx(PersonalTools.buildJyLx(p));
 
@@ -100,6 +102,10 @@ public class ImportTools {
 
         //全部处理完后重新统计就业人数和劳动力人数
         processCount();
+    }
+
+    private boolean isLdl(String val) {
+        return !(val.contains("无劳动力") || val.contains("丧失劳动力") || "否".equals(val));
     }
 
     private Family addOrUpdateFamily(Family old, Family f) {
