@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,14 +122,16 @@ public class UploadController {
         System.out.println("========上传Excel人员数据=======");
         if(multipartFile!=null && multipartFile.length>=1) {
             MultipartFile file = multipartFile[0];
-            System.out.println("=========接收到Excel人员数据==========");
             if(file!=null) {
+                System.out.println("=========接收到Excel人员数据==========");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        System.out.println("----线程启动----");
                         try {
                             importTools.process(file.getInputStream()); //
-                        } catch (IOException e) {
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }).start();
