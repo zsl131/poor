@@ -49,7 +49,9 @@ public class ImportTools {
         List<Town> cunList = townDao.findAllCun(); //村
         Town xz = null, cun = null;
         Personal hz = null;//户主
+        int count = 0;
         for(Personal p : personalList) {
+            System.out.println("=====处理：："+(count++));
 //                if(p.getSfzh().length()>18) {p.setSfzh(p.getSfzh().substring(0, 18));} //处理身份证号
             p.setXb(buildXb(p.getSfzh(), p.getXb())); //重设性别
             p.setJtdz("彝良县"+p.getXzmc()+p.getCzmc()+p.getZrc());

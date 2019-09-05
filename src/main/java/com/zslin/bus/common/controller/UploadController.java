@@ -119,11 +119,9 @@ public class UploadController {
     @RequestMapping(value = "uploadPersonalExcel")
     public String uploadPersonalExcel(@RequestParam("file")MultipartFile[] multipartFile,String extra) throws  Exception {
         String result = "error";
-        System.out.println("========上传Excel人员数据=======");
         if(multipartFile!=null && multipartFile.length>=1) {
             MultipartFile file = multipartFile[0];
             if(file!=null) {
-                System.out.println("=========接收到Excel人员数据==========");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
