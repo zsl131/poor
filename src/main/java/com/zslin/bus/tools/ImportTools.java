@@ -102,6 +102,7 @@ public class ImportTools {
 
         //全部处理完后重新统计就业人数和劳动力人数
         processCount();
+        System.out.println("+++++++处理完成+++++++");
     }
 
     private boolean isLdl(String val) {
