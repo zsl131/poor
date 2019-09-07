@@ -26,6 +26,40 @@ import java.util.List;
 @ActiveProfiles("zsl")
 public class JDBCExcelTools {
 
+    /** 重新计算各户种植地面积 */
+    @Test
+    public void test02() {
+        Connection con = getCon(false); //TODO 选择连接方式
+        processArea(con);
+    }
+
+    /** 处理面积 */
+    private void processArea(Connection con) {
+        try {
+
+            PreparedStatement ps = con.prepareStatement("SELECT hzsfzh, SUM(zzmj) FROM t_family_plant GROUP BY hzsfzh");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String hzsfzh = rs.getString(1);
+                Float zzmj = rs.getFloat(2);
+//                System.out.println("身份证号："+hzsfzh +", "+ "面积："+zzmj);
+
+                Statement statement = con.createStatement();
+                statement.executeUpdate("UPDATE t_family o SET o.zzdmj="+zzmj +" WHERE o.sfzh='"+hzsfzh+"'");
+            }
+
+            /*//2.创建statement类对象，用来执行SQL语句！！
+            Statement statement = con.createStatement();
+            //要执行的SQL语句
+            //3.ResultSet类，用来存放获取的结果集！！
+            Integer amount = statement.executeUpdate("UPDATE t_family o SET o.ktgmj="+ktgmj +", o.ld="+ldmj+", o.zjd="+zjdmj+", o.gd="+gdmj+" WHERE o.sfzh='"+sfzh+"'");
+            Integer amount2 = statement.executeUpdate("UPDATE t_personal o SET o.ktgmj="+ktgmj +", o.ld="+ldmj+", o.zjd="+zjdmj+", o.gd="+gdmj+" WHERE o.hzsfzh='"+sfzh+"'");
+            String insertSql = "insert into t_family_plant(hzsfzh, hzxm, zzmj, zzpzdm, zzpzmc) values(?,?,?,?,?)";*/
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /** 处理三块地 */
     @Test
     public void test01() {
@@ -33,11 +67,12 @@ public class JDBCExcelTools {
             Integer amount = 0;
             Long start = System.currentTimeMillis();
             String excelFile = "D:/temp/sankuaidi.xlsx";
-            Connection con = getCon(false); //TODO 选择连接方式
+            Connection con = getCon(true); //TODO 选择连接方式
             FileInputStream fis = new FileInputStream(excelFile);
             try {
                 Workbook wb = WorkbookFactory.create(fis);
                 Sheet s = wb.getSheetAt(0);
+                System.out.println("=====共【"+s.getLastRowNum()+"】行数据");
                 for(int i=1;i<=s.getLastRowNum();i++) {
                     Row row = s.getRow(i);
                     String xm = "";
@@ -108,7 +143,8 @@ public class JDBCExcelTools {
     }
 
     private static JDBCPOJO getRemote() {
-        JDBCPOJO res = new JDBCPOJO("jdbc:mysql://121.40.210.94:13326/poor", "root", "ynzslzsl**");
+//        JDBCPOJO res = new JDBCPOJO("jdbc:mysql://121.40.210.94:13326/poor", "root", "ynzslzsl**");
+        JDBCPOJO res = new JDBCPOJO("jdbc:mysql://123.58.6.13:13326/poor", "root", "ynzslzsl**");
         return res;
     }
 

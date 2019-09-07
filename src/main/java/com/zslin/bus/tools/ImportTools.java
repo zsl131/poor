@@ -116,7 +116,7 @@ public class ImportTools {
             familyDao.save(f);
             return f;
         } else {
-            MyBeanUtils.copyProperties(f, old, "id", "sfzh");
+            MyBeanUtils.copyProperties(f, old, "id", "sfzh", "zjd", "ld", "gd");
             familyDao.save(old);
             return old;
         }
@@ -126,7 +126,7 @@ public class ImportTools {
         if(old==null) {
             personalDao.save(p);
         } else {
-            MyBeanUtils.copyProperties(p, old, "id", "sfzh");
+            MyBeanUtils.copyProperties(p, old, "id", "sfzh", "zjd", "ld", "gd");
             personalDao.save(old);
         }
     }
