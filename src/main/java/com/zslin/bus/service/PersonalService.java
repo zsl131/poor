@@ -117,6 +117,7 @@ public class PersonalService {
             obj.setJtdz(p.getJtdz());
             obj.setZplj(p.getZplj());
             obj.setPxxq(p.getPxxq());
+            obj.setZpyy(p.getZpyy());
             obj.setCjhzpx(p.getCjhzpx());
             personalDao.save(obj);
             return JsonResult.success("数据修改成功");
